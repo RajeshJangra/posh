@@ -8,4 +8,3 @@ com/xebia/hr/entity/Choice.class
 com/xebia/hr/service/EmployeeService.class
 com/xebia/hr/repository/CourseRepository.class
 com/xebia/hr/repository/EmployeeRepository.class
-com/xebia/hr/utils/Constants.class

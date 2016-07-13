@@ -33,21 +33,21 @@ formatter.match({
   "location": "EmployeeStepDefs.two_employees_exist_in_mobility_system()"
 });
 formatter.result({
-  "duration": 181805616,
+  "duration": 187095561,
   "status": "passed"
 });
 formatter.match({
   "location": "EmployeeStepDefs.i_fetch_all_employees()"
 });
 formatter.result({
-  "duration": 53647,
+  "duration": 27901,
   "status": "passed"
 });
 formatter.match({
   "location": "EmployeeStepDefs.the_result_should_be_two_employees()"
 });
 formatter.result({
-  "duration": 20203,
+  "duration": 12631,
   "status": "passed"
 });
 });
