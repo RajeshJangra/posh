@@ -1,14 +1,23 @@
 package com.xebia.hr.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Created by rajeshkumar on 05/09/15.
@@ -24,6 +33,9 @@ public class Employee implements Serializable {
 
     @Column(nullable = false, columnDefinition = "Varchar(100)", name = "NAME")
     private String name;
+    
+    @Column(nullable = false, columnDefinition = "Varchar(30)", name = "TYPE")
+    private String empType;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "DOJ")
@@ -35,15 +47,22 @@ public class Employee implements Serializable {
     @Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL")
     private String email;
 
-    @Column(nullable = false, columnDefinition = "Varchar(30)", name = "CONTACT_NUMBER")
+    @Column(nullable = false, columnDefinition = "Varchar(15)", name = "CONTACT_NUMBER")
     private String contactNumber;
 
     @Column(nullable = false, name = "GENDER", columnDefinition = "Varchar(6)")
     private String gender;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DOB", nullable = false)
+    private Date dob;
+    
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
 
     @ManyToMany
     @JoinTable(name = "EMPLOYEE_COURSE", joinColumns = {@JoinColumn(name = "EMPLOYEE_ID", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "COURSE_ID", nullable = false, updatable = false)})
-    private Set<Course> courses = new HashSet<>();
+    private Set<Course> courses = new HashSet<Course>();
 
     public String getId() {
         return id;
@@ -108,8 +127,32 @@ public class Employee implements Serializable {
     public void setCourses(final Set<Course> courses) {
         this.courses = courses;
     }
+    
+    public Date getDob() {
+		return dob;
+	}
 
-    @Override
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getEmpType() {
+		return empType;
+	}
+
+	public void setEmpType(String empType) {
+		this.empType = empType;
+	}
+
+	@Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

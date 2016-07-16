@@ -1,44 +1,45 @@
 package com.xebia.hr.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  * Created by rajeshkumar on 05/09/15.
  */
 @Entity
 @Table(name = "ATTEMPT")
-public class Attempt implements Serializable {
+public class Attempt extends AbstractPersistable<Long> implements Serializable, Comparable<Attempt> {
 
-    @Id
-    @Column(columnDefinition = "Integer(3)", name = "ID")
-    private long id;
-
-    @Column(nullable = false, columnDefinition = "Integer(3)", name = "SCORE")
+    @Column(columnDefinition = "Integer(3)", name = "SCORE")
     private String score;
 
-    @Column(nullable = false, columnDefinition = "Integer(3)", name = "MAX_SCORE")
+    @Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
     private String maxScore;
 
-    @Column(nullable = false, columnDefinition = "Varchar(6)", name = "RESULT")
+    @Column(columnDefinition = "Varchar(6)", name = "RESULT")
     private String result;
+    
+    @Column(name = "START_TIME", nullable=false)
+    private Timestamp startTime;
+    
+    @Column(name = "FINISH_TIME")
+    private Timestamp finishTime;
 
     @ManyToOne
-    @JoinColumn(name = "COURSE_ID")
+    @JoinColumn(name = "COURSE_ID", nullable=false)
     private Course course;
 
     @ManyToOne
-    @JoinColumn(name = "EMPLOYEE_ID")
+    @JoinColumn(name = "EMPLOYEE_ID", nullable=false)
     private Employee employee;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(final long id) {
-        this.id = id;
-    }
 
     public String getScore() {
         return score;
@@ -79,22 +80,25 @@ public class Attempt implements Serializable {
     public void setEmployee(final Employee employee) {
         this.employee = employee;
     }
+    
+    public Timestamp getStartTime() {
+		return startTime;
+	}
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Attempt attempt = (Attempt) o;
-        return id == attempt.id;
-    }
+	public void setStartTime(Timestamp startTime) {
+		this.startTime = startTime;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+	public Timestamp getFinishTime() {
+		return finishTime;
+	}
 
-    @Override
-    public String toString() {
-        return "Attempt{" + "id=" + id + ", score='" + score + '\'' + ", maxScore='" + maxScore + '\'' + ", result='" + result + '\'' + ", course=" + course + '}';
-    }
+	public void setFinishTime(Timestamp finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	@Override
+	public int compareTo(Attempt o) {
+		return this.startTime.compareTo(o.startTime);
+	}
 }

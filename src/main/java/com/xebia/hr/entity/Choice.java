@@ -1,6 +1,9 @@
 package com.xebia.hr.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,6 +23,7 @@ public class Choice implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
+    @JsonIgnore
     private Question question;
 
     public long getId() {

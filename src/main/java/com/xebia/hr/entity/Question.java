@@ -1,10 +1,16 @@
 package com.xebia.hr.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * Created by rajeshkumar on 05/09/15.
@@ -29,6 +35,9 @@ public class Question implements Serializable {
     @ManyToOne
     @JoinColumn(name = "COURSE_ID")
     private Course course;
+    
+    @OneToMany(mappedBy = "question")
+    private List<Choice> choices;
 
     public long getId() {
         return id;
@@ -70,7 +79,15 @@ public class Question implements Serializable {
         this.course = course;
     }
 
-    @Override
+    public List<Choice> getChoices() {
+		return choices;
+	}
+
+	public void setChoices(List<Choice> choices) {
+		this.choices = choices;
+	}
+
+	@Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
