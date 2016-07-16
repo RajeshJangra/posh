@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,8 @@ import javax.persistence.Table;
 public class Question implements Serializable {
 
     @Id
-    @Column(columnDefinition = "Integer(10)", name = "ID")
+    @GeneratedValue
+    @Column(name = "ID")
     private long id;
 
     @Column(nullable = false, columnDefinition = "Varchar(30)", name = "NAME")

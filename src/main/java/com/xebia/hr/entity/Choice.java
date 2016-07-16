@@ -15,7 +15,8 @@ import java.util.Objects;
 public class Choice implements Serializable {
 
     @Id
-    @Column(columnDefinition = "Integer(10)", name = "ID")
+    @GeneratedValue
+    @Column(name = "ID")
     private long id;
 
     @Column(nullable = false, columnDefinition = "Varchar(1000)", name = "DESCRIPTION")

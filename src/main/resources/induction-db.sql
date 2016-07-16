@@ -31,7 +31,7 @@ CREATE TABLE `attempt` (
   `MAX_SCORE` int(3) DEFAULT NULL,
   `RESULT` varchar(6) DEFAULT NULL,
   `SCORE` int(3) DEFAULT NULL,
-  `COURSE_ID` int(3) NOT NULL,
+  `COURSE_ID` bigint(20) NOT NULL,
   `EMPLOYEE_ID` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_5cx4havmq0v1hqxaxoxjrtgcq` (`COURSE_ID`),
@@ -58,9 +58,9 @@ DROP TABLE IF EXISTS `choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `choice` (
-  `ID` int(10) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `DESCRIPTION` varchar(1000) NOT NULL,
-  `QUESTION_ID` int(10) DEFAULT NULL,
+  `QUESTION_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_5lvgee9xbmwsial7cqccsjue0` (`QUESTION_ID`),
   CONSTRAINT `FK_5lvgee9xbmwsial7cqccsjue0` FOREIGN KEY (`QUESTION_ID`) REFERENCES `question` (`ID`)
@@ -85,7 +85,7 @@ DROP TABLE IF EXISTS `course`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `course` (
-  `ID` int(3) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `DESCRIPTION` varchar(100) NOT NULL,
   `NAME` varchar(30) NOT NULL,
   PRIMARY KEY (`ID`)
@@ -143,7 +143,7 @@ DROP TABLE IF EXISTS `employee_course`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee_course` (
   `EMPLOYEE_ID` varchar(10) NOT NULL,
-  `COURSE_ID` int(3) NOT NULL,
+  `COURSE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`EMPLOYEE_ID`,`COURSE_ID`),
   KEY `FK_nhtdo9yp9uy8hkjgoxs5100or` (`COURSE_ID`),
   CONSTRAINT `FK_1yscktvf0mkdv3lkb1nemm6is` FOREIGN KEY (`EMPLOYEE_ID`) REFERENCES `employee` (`ID`),
@@ -169,11 +169,11 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question` (
-  `ID` int(10) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ANSWER` varchar(1) NOT NULL,
   `DESCRIPTION` varchar(1000) NOT NULL,
   `NAME` varchar(30) NOT NULL,
-  `COURSE_ID` int(3) DEFAULT NULL,
+  `COURSE_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_nc35b7aoollxpxjre4hrx0wty` (`COURSE_ID`),
   CONSTRAINT `FK_nc35b7aoollxpxjre4hrx0wty` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`ID`)
