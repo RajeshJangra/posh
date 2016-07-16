@@ -33,10 +33,10 @@ public class EmployeeController {
         return employeeService.createEmployee(employee);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{empId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Employee findUserbyId(@PathVariable String id) {
-        return employeeService.findEmployeeById(id);
+    public Employee findUserbyId(@PathVariable String empId) {
+        return employeeService.findByEmpId(empId);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

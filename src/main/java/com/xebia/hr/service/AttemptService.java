@@ -39,7 +39,7 @@ public class AttemptService {
     
     public Attempt savePartially(long courseId, String empId){
     	Course course = courseRepository.findOne(courseId);
-    	Employee employee = employeeRepository.findOne(empId);
+    	Employee employee = employeeRepository.findByEmpId(empId);
     	
     	Attempt attempt = new Attempt();
     	attempt.setCourse(course);

@@ -41,7 +41,7 @@ public class CourseService {
     }
     
     public List<CourseDto> findCourses(String empId){
-    	Employee employee = employeeService.findEmployeeById(empId);
+    	Employee employee = employeeService.findByEmpId(empId);
     	List<Course> courses = courseRepository.findByEmployees(employee);
     	
     	List<CourseDto> dtos = new ArrayList<>(courses.size());

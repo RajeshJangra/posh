@@ -23,8 +23,8 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee findEmployeeById(String userId) {
-        return employeeRepository.findOne(userId);
+    public Employee findByEmpId(String empId) {
+        return employeeRepository.findByEmpId(empId);
     }
 
     public List<Employee> findAllEmployees() {

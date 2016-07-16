@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,8 +29,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Employee implements Serializable {
 
     @Id
-    @Column(columnDefinition = "Varchar(10)", name = "ID")
-    private String id;
+    @GeneratedValue
+    @Column(name = "ID")
+    private long id;
+    
+    @Column(name = "EMP_ID", nullable = false, unique = true, columnDefinition = "Varchar(5)")
+    private String empId;
 
     @Column(nullable = false, columnDefinition = "Varchar(100)", name = "NAME")
     private String name;
@@ -44,7 +49,7 @@ public class Employee implements Serializable {
     @Column(nullable = false, columnDefinition = "Varchar(30)", name = "DESIGNATION")
     private String designation;
 
-    @Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL")
+    @Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL", unique = true)
     private String email;
 
     @Column(nullable = false, columnDefinition = "Varchar(15)", name = "CONTACT_NUMBER")
@@ -64,15 +69,23 @@ public class Employee implements Serializable {
     @JoinTable(name = "EMPLOYEE_COURSE", joinColumns = {@JoinColumn(name = "EMPLOYEE_ID", nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "COURSE_ID", nullable = false, updatable = false)})
     private Set<Course> courses = new HashSet<Course>();
 
-    public String getId() {
-        return id;
-    }
+    public long getId() {
+		return id;
+	}
 
-    public void setId(final String id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
+	public String getName() {
         return name;
     }
 

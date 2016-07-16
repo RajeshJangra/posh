@@ -26,13 +26,13 @@ DROP TABLE IF EXISTS `attempt`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attempt` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `START_TIME` datetime NOT NULL,
   `FINISH_TIME` datetime DEFAULT NULL,
   `MAX_SCORE` int(3) DEFAULT NULL,
   `RESULT` varchar(6) DEFAULT NULL,
   `SCORE` int(3) DEFAULT NULL,
+  `START_TIME` datetime NOT NULL,
   `COURSE_ID` bigint(20) NOT NULL,
-  `EMPLOYEE_ID` varchar(10) NOT NULL,
+  `EMPLOYEE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_5cx4havmq0v1hqxaxoxjrtgcq` (`COURSE_ID`),
   KEY `FK_b808u3ynlaaa04apae24ixcgd` (`EMPLOYEE_ID`),
@@ -40,15 +40,6 @@ CREATE TABLE `attempt` (
   CONSTRAINT `FK_b808u3ynlaaa04apae24ixcgd` FOREIGN KEY (`EMPLOYEE_ID`) REFERENCES `employee` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `attempt`
---
-
-LOCK TABLES `attempt` WRITE;
-/*!40000 ALTER TABLE `attempt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `attempt` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `choice`
@@ -68,16 +59,6 @@ CREATE TABLE `choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `choice`
---
-
-LOCK TABLES `choice` WRITE;
-/*!40000 ALTER TABLE `choice` DISABLE KEYS */;
-INSERT INTO `choice` VALUES (1,'A 1',1),(2,'A 2',1),(3,'A1',2),(4,'A2',2),(5,'A3',2);
-/*!40000 ALTER TABLE `choice` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `course`
 --
 
@@ -93,16 +74,6 @@ CREATE TABLE `course` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `course`
---
-
-LOCK TABLES `course` WRITE;
-/*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (1,'Prevention Of Sexual harrassment','POSH'),(2,'Office manners desc','Office Etiquette');
-/*!40000 ALTER TABLE `course` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `employee`
 --
 
@@ -110,29 +81,22 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee` (
-  `ID` varchar(10) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CONTACT_NUMBER` varchar(15) NOT NULL,
   `DOJ` date DEFAULT NULL,
   `DESIGNATION` varchar(30) NOT NULL,
   `DOB` date NOT NULL,
   `EMAIL` varchar(50) NOT NULL,
+  `EMP_ID` varchar(5) NOT NULL,
   `TYPE` varchar(30) NOT NULL,
   `GENDER` varchar(6) NOT NULL,
   `NAME` varchar(100) NOT NULL,
   `PASSWORD` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UK_m30joy0i68j6kajwwne0tf9of` (`EMAIL`),
+  UNIQUE KEY `UK_2v3s04062qfuas8c5ops15w1k` (`EMP_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employee`
---
-
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('XI1','8976547893','2016-06-06','Consultant','1989-06-05','q2w','Full Time','Male','A Khanna','ww'),('XI2','1234567891','2015-09-09','Senior Consultant','2010-01-02','e2','Contractor','Female','B Roy','w');
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employee_course`
@@ -142,7 +106,7 @@ DROP TABLE IF EXISTS `employee_course`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee_course` (
-  `EMPLOYEE_ID` varchar(10) NOT NULL,
+  `EMPLOYEE_ID` bigint(20) NOT NULL,
   `COURSE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`EMPLOYEE_ID`,`COURSE_ID`),
   KEY `FK_nhtdo9yp9uy8hkjgoxs5100or` (`COURSE_ID`),
@@ -150,16 +114,6 @@ CREATE TABLE `employee_course` (
   CONSTRAINT `FK_nhtdo9yp9uy8hkjgoxs5100or` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employee_course`
---
-
-LOCK TABLES `employee_course` WRITE;
-/*!40000 ALTER TABLE `employee_course` DISABLE KEYS */;
-INSERT INTO `employee_course` VALUES ('XI1',1),('XI1',2),('XI2',2);
-/*!40000 ALTER TABLE `employee_course` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `question`
@@ -179,16 +133,6 @@ CREATE TABLE `question` (
   CONSTRAINT `FK_nc35b7aoollxpxjre4hrx0wty` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `question`
---
-
-LOCK TABLES `question` WRITE;
-/*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,'2','Q 1 desc','Q 1',1),(2,'1','Q 2 desc','Q 2',1),(3,'1','Q 3 desc','Q 3',1);
-/*!40000 ALTER TABLE `question` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -199,4 +143,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-15 11:38:40
+-- Dump completed on 2016-07-16 11:05:23
