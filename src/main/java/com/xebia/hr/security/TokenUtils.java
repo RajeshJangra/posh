@@ -40,8 +40,8 @@ public class TokenUtils {
 	public Boolean isTokenValid(String token, UserDetails userDetails) {
 		UserDto user = (UserDto) userDetails;
 		final String username = this.getUsernameFromToken(token);
-		//final Date created = this.getCreatedDateFromToken(token);
-		return (username.equals(user.getUsername()) && !(this.isTokenExpired(token)) );
+		final Date created = this.getCreatedDateFromToken(token);
+		return (username.equals(user.getUsername()) && !(this.isTokenExpired(token)) && !(this.isCreatedBeforeLastPasswordReset(created, user.getLastPasswordReset())));
 	}
 
 	public Date getCreatedDateFromToken(String token) {
@@ -66,8 +66,9 @@ public class TokenUtils {
 		return expiration;
 	}
 
-	public Boolean canTokenBeRefreshed(String token) {
-		return !( this.isTokenExpired(token) );
+	public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
+		final Date created = this.getCreatedDateFromToken(token);
+		return ( !(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset)) && (!(this.isTokenExpired(token))) );
 	}
 
 	public String refreshToken(String token) {
@@ -121,6 +122,10 @@ public class TokenUtils {
 				.setExpiration(this.generateExpirationDate())
 				.signWith(SignatureAlgorithm.HS512, this.secret)
 				.compact();
+	}
+
+	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
+		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}
 
 }	

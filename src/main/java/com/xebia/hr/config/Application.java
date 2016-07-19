@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -21,7 +20,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
  * Created by anirudh on 13/07/15.
  */
 
-@SpringBootApplication//(exclude={SecurityAutoConfiguration.class})
+@SpringBootApplication
 @ComponentScan(basePackages = {"com.xebia.hr"} )
 @EntityScan(basePackages = {"com.xebia.hr.entity"})
 @EnableJpaRepositories(basePackages = {"com.xebia.hr.repository"})

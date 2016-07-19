@@ -46,22 +46,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-		.csrf()
-		.disable()
-		.exceptionHandling()
-		.authenticationEntryPoint(this.unauthorizedHandler)
-		.and()
-		.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.authorizeRequests()
-		//.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		.antMatchers("/auth/**").permitAll()
-		.anyRequest().authenticated();
+			.csrf()
+				.disable()
+			.exceptionHandling()
+				.authenticationEntryPoint(this.unauthorizedHandler)
+			.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+				.authorizeRequests()
+				.antMatchers("/auth/**").permitAll()
+				.anyRequest().authenticated();
 
 		// Custom JWT based authentication
 		httpSecurity
-		.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
