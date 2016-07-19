@@ -9,4 +9,6 @@ public interface AppConstants {
 	public String FAILED = "FAILED";
 	public String NOT_STARTED = "NOT STARTED";
 	
+	public String X_AUTH_TOKEN = "X-Auth-Token";
+	
 }

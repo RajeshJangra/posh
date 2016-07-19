@@ -41,7 +41,7 @@ public class EmployeeController {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Employee> findAllEmployees(@RequestParam Long courseId) {
+    public List<Employee> findAllEmployees(@RequestParam(required=false) Long courseId) {
         return courseId == null ? employeeService.findAllEmployees() : employeeService.findByCourseId(courseId);
     }
     
