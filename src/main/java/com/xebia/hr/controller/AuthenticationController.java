@@ -1,8 +1,11 @@
 package com.xebia.hr.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xebia.hr.constants.AppConstants;
 import com.xebia.hr.dto.LoginRequestDto;
 import com.xebia.hr.dto.LoginResponseDto;
+import com.xebia.hr.dto.UserDto;
+import com.xebia.hr.entity.Employee;
 import com.xebia.hr.security.TokenUtils;
+import com.xebia.hr.service.EmployeeService;
 import com.xebia.hr.service.InductionUserDetailsService;
 
 @RestController
@@ -28,6 +34,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	@Autowired
 	private TokenUtils tokenUtils;
@@ -59,7 +68,8 @@ public class AuthenticationController {
 	public ResponseEntity<?> authenticationRequest(HttpServletRequest request) {
 		String token = request.getHeader(AppConstants.X_AUTH_TOKEN);
 		String username = this.tokenUtils.getUsernameFromToken(token);
-		if (this.tokenUtils.canTokenBeRefreshed(token)) {
+		UserDto user = (UserDto) this.inductionUserDetailsService.loadUserByUsername(username);
+		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
 			String refreshedToken = this.tokenUtils.refreshToken(token);
 			return ResponseEntity.ok(new LoginResponseDto(username, refreshedToken));
 		} else {
@@ -70,6 +80,20 @@ public class AuthenticationController {
 	@RequestMapping(value="/invalidate", method = RequestMethod.GET)
 	public void invalidateToken(@RequestHeader(AppConstants.X_AUTH_TOKEN) String authToken) throws AuthenticationException {
 		SecurityContextHolder.getContext().setAuthentication(null);
+	}
+	
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	public ResponseEntity<?> changePassword(@RequestBody UserDto user) 
+			throws IOException {
+		try {
+			Employee employee = employeeService.findByEmpId(user.getUsername());
+			employee.setPassword(user.getPassword());
+			employee.setLastPasswordReset(user.getLastPasswordReset());
+			employeeService.createEmployee(employee);
+			return ResponseEntity.ok("Password changes successfully.");
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }
