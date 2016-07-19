@@ -69,7 +69,8 @@ CREATE TABLE `course` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `DESCRIPTION` varchar(100) NOT NULL,
   `NAME` varchar(30) NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UK_58r0wv0malwrmw2dfj5ud69f` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -82,6 +83,7 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `AUTHORITIES` varchar(60) DEFAULT 'user',
   `CONTACT_NUMBER` varchar(15) NOT NULL,
   `DOJ` date DEFAULT NULL,
   `DESIGNATION` varchar(30) NOT NULL,
@@ -90,6 +92,8 @@ CREATE TABLE `employee` (
   `EMP_ID` varchar(5) NOT NULL,
   `TYPE` varchar(30) NOT NULL,
   `GENDER` varchar(6) NOT NULL,
+  `IS_ACTIVE` tinyint(1) DEFAULT '0',
+  `LAST_PASSWORD_RESET` date DEFAULT NULL,
   `NAME` varchar(100) NOT NULL,
   `PASSWORD` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
@@ -129,6 +133,7 @@ CREATE TABLE `question` (
   `NAME` varchar(30) NOT NULL,
   `COURSE_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
+  UNIQUE KEY `UK_84npujpjr090ii424a130asgl` (`NAME`),
   KEY `FK_nc35b7aoollxpxjre4hrx0wty` (`COURSE_ID`),
   CONSTRAINT `FK_nc35b7aoollxpxjre4hrx0wty` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

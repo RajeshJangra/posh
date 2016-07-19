@@ -29,7 +29,7 @@ public class Course implements Serializable {
     @Column(name = "ID")
     private long id;
 
-    @Column(nullable = false, columnDefinition = "Varchar(30)", name = "NAME")
+    @Column(nullable = false, columnDefinition = "Varchar(30)", name = "NAME", unique=true)
     private String name;
 
     @Column(nullable = false, columnDefinition = "Varchar(100)", name = "DESCRIPTION")
