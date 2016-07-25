@@ -32,7 +32,6 @@ import com.xebia.hr.service.InductionUserDetailsService;
 
 @RestController
 @RequestMapping(value="/auth")
-@CrossOrigin
 public class AuthenticationController {
 
 	@Autowired
