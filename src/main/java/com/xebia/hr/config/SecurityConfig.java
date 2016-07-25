@@ -56,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 				.authorizeRequests()
-				.antMatchers("/auth/**").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //Added to fix CORS issue
+				.antMatchers("/auth/**").permitAll()
 				.anyRequest().authenticated();
 
 		// Custom JWT based authentication
