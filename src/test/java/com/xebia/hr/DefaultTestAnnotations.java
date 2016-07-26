@@ -13,7 +13,7 @@ import com.xebia.hr.config.Application;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @SpringApplicationConfiguration(classes = Application.class)
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations="classpath:application.properties")
 public @interface DefaultTestAnnotations {
 
 }
