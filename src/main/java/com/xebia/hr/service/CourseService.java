@@ -53,4 +53,8 @@ public class CourseService {
     	return dtos;
     }
     
+    public Course findOne(Long courseId){
+    	return courseRepository.findOne(courseId);
+    }
+    
 }

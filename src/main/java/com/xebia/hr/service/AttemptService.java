@@ -1,6 +1,7 @@
 package com.xebia.hr.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,11 @@ public class AttemptService {
     	attempt.setResult(AppConstants.IN_PROGRESS);
     	return attemptRepository.save(attempt);
     }
+    
+    public List<Attempt> findByCourseAndEmployee(long courseId, String empId){
+    	Course course = courseRepository.findOne(courseId);
+    	Employee employee = employeeRepository.findByEmpId(empId);
+    	return attemptRepository.findByCourseAndEmployee(course, employee);
+    };
     
 }
