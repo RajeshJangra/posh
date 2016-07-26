@@ -91,7 +91,6 @@ public class CourseController {
     	return questionService.findQuestions(courseId);
     }
     
-    //By the way we can use token to find the empId TODO
     @RequestMapping(value="/{courseId}/start/{empId}", method = RequestMethod.GET)
     public ResponseEntity<?> startCourse(@PathVariable long courseId, @PathVariable String empId) {
     	
@@ -100,12 +99,12 @@ public class CourseController {
    		Collections.sort(attempts);
     	Attempt latestAttempt = attempts.get(attempts.size()-1);
     	if(AppConstants.PASSED.equals(latestAttempt.getResult())){
-    		return new ResponseEntity("Employee already cleared the test.", HttpStatus.BAD_REQUEST);
+    		return ResponseEntity.badRequest().body("Employee already cleared the test. Can not take test again.");
     	}
     	
     	//If emp attempted 3 times then block the course
     	if(attempts.size() >= 3){
-    		return new ResponseEntity("Number of attempt limit exceeded.", HttpStatus.BAD_REQUEST);
+    		return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
     	}
     	
 		Attempt attempt = attemptService.savePartially(courseId, empId);
