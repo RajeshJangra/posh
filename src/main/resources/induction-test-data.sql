@@ -56,9 +56,9 @@ UNLOCK TABLES;
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 INSERT INTO `employee` (`CONTACT_NUMBER`, `DOB`, `DOJ`, `DESIGNATION`, `EMAIL`, `EMP_ID`, `TYPE`, `GENDER`, `IS_ACTIVE`, `LAST_PASSWORD_RESET`, `NAME`, `PASSWORD`) 
-VALUES ('8976547893', '2016-06-06', '2016-06-06', 'Consultant', 'd', 'XI1', 'd', 'Male', '1', '2016-06-06', 'ds', '$2a$10$LX1EvEfQY2JGP0LwPe2rzeH2NFCIijMEOxOQFqCe6J9DOxxjWtzJ2');
+VALUES ('8976547893', '2016-06-06', '2016-06-06', 'Consultant', 'd', 'XI1', 'd', 'Male', '1', '2016-06-06', 'ds', '$2a$10$LyKQ3koH2V/wIW1/mWe5fuZ371fCFvWA8ATj4bRBta8RCZ3fpnkU2');
 INSERT INTO `employee` (`CONTACT_NUMBER`, `DOB`, `DOJ`, `DESIGNATION`, `EMAIL`, `EMP_ID`, `TYPE`, `GENDER`, `IS_ACTIVE`, `LAST_PASSWORD_RESET`, `NAME`, `PASSWORD`) 
-VALUES ('8976547893', '2016-06-06', '2016-06-06', 'Consultant', 'ds', 'XI2', 'd', 'Male', '1', '2016-06-06', 'ds', '$2a$10$LX1EvEfQY2JGP0LwPe2rzeH2NFCIijMEOxOQFqCe6J9DOxxjWtzJ2');
+VALUES ('8976547893', '2016-06-06', '2016-06-06', 'Consultant', 'ds', 'XI2', 'd', 'Male', '1', '2016-06-06', 'ds', '$2a$10$LyKQ3koH2V/wIW1/mWe5fuZ371fCFvWA8ATj4bRBta8RCZ3fpnkU2');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,9 +66,10 @@ UNLOCK TABLES;
 -- Dumping data for table `employee_course`
 --
 
-LOCK TABLES `employee_course` WRITE;
+LOCK TABLES `employee_course` WRITE, `employee` WRITE,  `course` WRITE;
 /*!40000 ALTER TABLE `employee_course` DISABLE KEYS */;
-
+INSERT INTO employee_course (EMPLOYEE_ID, COURSE_ID)
+SELECT employee.id, course.id FROM employee, course ;
 /*!40000 ALTER TABLE `employee_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
