@@ -35,6 +35,29 @@ public class Course implements Serializable {
     @Column(nullable = false, columnDefinition = "Varchar(100)", name = "DESCRIPTION")
     private String description;
 
+    public String getVideoURL() {
+		return videoURL;
+	}
+
+	public void setVideoURL(String videoURL) {
+		this.videoURL = videoURL;
+	}
+
+	public String getPdfPath() {
+		return pdfPath;
+	}
+
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
+	}
+
+	@Column(nullable = false, columnDefinition = "Varchar(200)", name = "VIDEO_FILE_PATH")
+    private String videoURL;
+
+    @Column(nullable = false, columnDefinition = "Varchar(200)", name = "PDF_FILE_PATH")
+    private String pdfPath;
+
+    
     @ManyToMany(mappedBy = "courses")
     @JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
