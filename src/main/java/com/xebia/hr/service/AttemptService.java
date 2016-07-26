@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xebia.hr.constants.AppConstants;
 import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Employee;
@@ -45,6 +46,7 @@ public class AttemptService {
     	attempt.setCourse(course);
     	attempt.setEmployee(employee);
     	attempt.setStartTime( new Timestamp(System.currentTimeMillis()) );
+    	attempt.setResult(AppConstants.IN_PROGRESS);
     	return attemptRepository.save(attempt);
     }
     
