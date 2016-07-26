@@ -24,6 +24,7 @@ import com.xebia.hr.dto.QuestionDto;
 import com.xebia.hr.dto.QuestionsWrapper;
 import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Course;
+import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.service.AttemptService;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.QuestionService;
@@ -87,8 +88,15 @@ public class CourseController {
     }
     
     @RequestMapping(value="/{courseId}/questions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<QuestionDto> findCourses(@PathVariable long courseId) {
-    	return questionService.findQuestions(courseId);
+    public ResponseEntity<?> findQuestions(@PathVariable long courseId) {
+    	try{
+    		List<QuestionDto> questions = questionService.findQuestions(courseId);
+    		return ResponseEntity.ok(questions);
+    	} catch(NotFoundException nfe){
+    		return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
+    	} catch(Exception e){
+    		return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
     
     @RequestMapping(value="/{courseId}/start/{empId}", method = RequestMethod.GET)
@@ -107,9 +115,15 @@ public class CourseController {
     		return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
     	}
     	
-		Attempt attempt = attemptService.savePartially(courseId, empId);
-		List<QuestionDto> questions = questionService.findQuestions(courseId);
-    	return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions));
+		try{
+			Attempt attempt = attemptService.savePartially(courseId, empId);
+    		List<QuestionDto> questions = questionService.findQuestions(courseId);
+    		return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions));
+    	} catch(NotFoundException nfe){
+    		return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
+    	} catch(Exception e){
+    		return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
     
     @RequestMapping(value="/submit/{attemptId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
