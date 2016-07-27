@@ -1,9 +1,13 @@
 package com.xebia.hr.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +51,7 @@ public class AuthenticationController {
 	private InductionUserDetailsService inductionUserDetailsService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> authenticationRequest(@RequestBody LoginRequestDto loginRequestDto) throws AuthenticationException {
+	public ResponseEntity<?> authenticationRequest(@RequestBody @Valid LoginRequestDto loginRequestDto) throws AuthenticationException {
 
 		// Perform the authentication
 		Authentication authentication = this.authenticationManager.authenticate(
@@ -62,7 +67,7 @@ public class AuthenticationController {
 		String token = this.tokenUtils.generateToken(userDetails);
 
 		// Return the token
-		return ResponseEntity.ok(new LoginResponseDto(loginRequestDto.getUsername(), token));
+		return ResponseEntity.ok(new LoginResponseDto(loginRequestDto.getUsername(), token, getRoles(userDetails.getAuthorities()) ));
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
@@ -72,7 +77,7 @@ public class AuthenticationController {
 		UserDto user = (UserDto) this.inductionUserDetailsService.loadUserByUsername(username);
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
 			String refreshedToken = this.tokenUtils.refreshToken(token);
-			return ResponseEntity.ok(new LoginResponseDto(username, refreshedToken));
+			return ResponseEntity.ok(new LoginResponseDto(username, refreshedToken, getRoles(user.getAuthorities()) ));
 		} else {
 			return ResponseEntity.badRequest().body(null);
 		}
@@ -95,6 +100,10 @@ public class AuthenticationController {
 		} catch (Exception e) {
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	private List<String> getRoles(Collection<? extends GrantedAuthority> authorities){
+		return authorities.stream().map(authority -> authority.getAuthority()).collect(Collectors.toList());
 	}
 
 }
