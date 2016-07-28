@@ -86,7 +86,7 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `AUTHORITIES` varchar(60) DEFAULT 'user',
-  `CONTACT_NUMBER` varchar(15) NOT NULL,
+  `CONTACT_NUMBER` varchar(15) DEFAULT NULL,
   `DOJ` date DEFAULT NULL,
   `DESIGNATION` varchar(30) NOT NULL,
   `DOB` date NOT NULL,

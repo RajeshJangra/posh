@@ -40,6 +40,9 @@ public class Employee implements Serializable {
 	@Column(nullable = false, columnDefinition = "Varchar(100)", name = "NAME")
 	private String name;
 
+	/**
+	 * Type of Employee like Full Time, Contractual etc
+	 */
 	@Column(nullable = false, columnDefinition = "Varchar(30)", name = "TYPE")
 	private String empType;
 
@@ -53,7 +56,7 @@ public class Employee implements Serializable {
 	@Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL", unique = true)
 	private String email;
 
-	@Column(nullable = false, columnDefinition = "Varchar(15)", name = "CONTACT_NUMBER")
+	@Column(columnDefinition = "Varchar(15)", name = "CONTACT_NUMBER")
 	private String contactNumber;
 
 	@Column(nullable = false, name = "GENDER", columnDefinition = "Varchar(6)")
