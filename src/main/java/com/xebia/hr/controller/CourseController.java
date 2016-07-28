@@ -2,7 +2,9 @@ package com.xebia.hr.controller;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xebia.hr.constants.AppConstants;
+import com.xebia.hr.dto.CourseDto;
 import com.xebia.hr.dto.QuestionDto;
 import com.xebia.hr.dto.QuestionsWrapper;
 import com.xebia.hr.entity.Attempt;
@@ -28,6 +31,7 @@ import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.service.AttemptService;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.QuestionService;
+import com.xebia.hr.utils.CommonUtils;
 
 /**
  * @author gauravagrawal
@@ -127,16 +131,62 @@ public class CourseController {
     }
     
     @RequestMapping(value="/submit/{attemptId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Attempt submitCourse(@RequestBody List<QuestionDto> questions, @PathVariable long attemptId) {
+    public ResponseEntity<?> submitCourse(@RequestBody List<QuestionDto> questions, @PathVariable long attemptId) throws Exception {
     	
-    	//incase of submit/quit/session timeout
-    	
-    	Attempt attempt = attemptService.findOne(attemptId);
-    	/*attempt.setFinishTime(finishTime);
-    	attempt.setMaxScore(maxScore);
-    	attempt.setResult(result);
-    	attempt.setScore(score);*/
-    	return attemptService.save(attempt);
+    	// incase of submit/quit/session timeout
+    			Attempt attempt = attemptService.findOne(attemptId);
+    			int actualScore = 0;
+    			
+    			long CourseId = attempt.getCourse().getId();
+    			
+    			List<QuestionDto> actualQues;
+    			
+    			try{
+    			actualQues = questionService.findQuestions(CourseId);
+    			} catch(NotFoundException nfe){
+    	    		return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
+    	    	} catch(Exception e){
+    	    		return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	    	}
+    			
+    			int maxScore = actualQues.size();
+    			
+    			HashMap<Long, QuestionDto> questionmap = new HashMap<>();
+    	        		
+    			for(QuestionDto question : actualQues){
+    				questionmap.put(Long.valueOf(question.getId()), question);
+    			}
+    					
+    			for (QuestionDto question : questions) {
+    				QuestionDto questiondb = questionmap.get(question.getId());
+    				if (question.getSelectedChoiceId().equals(questiondb.getCorrectChoiceId())) {
+    					actualScore++;
+    				}
+    			}
+    			
+    			int percentage = CommonUtils.calculatepercentage(actualScore, maxScore); 
+
+    			if (percentage >= 90) {
+    				attempt.setResult(AppConstants.PASSED);
+    				
+    			} else {
+    				attempt.setResult(AppConstants.FAILED);
+    			}
+
+    			CourseDto courseDto = new CourseDto();
+
+    			courseDto.setResult(attempt.getResult());
+    			courseDto.setScore(String.valueOf(percentage));
+    			courseDto.setId(attempt.getCourse().getId());
+
+    			attempt.setFinishTime(new Timestamp(System.currentTimeMillis())); 
+    			attempt.setMaxScore(String.valueOf(maxScore));
+    			attempt.setScore(String.valueOf(actualScore));
+    			
+    			attemptService.save(attempt);
+    			
+    			return ResponseEntity.ok(courseDto);
+    			
     }
     
     
