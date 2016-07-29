@@ -44,4 +44,8 @@ public class EmployeeService {
         Course course = courseRepository.findOne(courseId);
         return employeeRepository.findByCourses(course);
     }
+    
+    public void save(List<Employee> employees) {
+    	employeeRepository.save(employees);
+	}
 }
