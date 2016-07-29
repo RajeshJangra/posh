@@ -21,12 +21,15 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.ToString;
+
 /**
  * Created by rajeshkumar on 05/09/15.
  */
 @Entity
 @Table(name = "EMPLOYEE")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ToString
 public class Employee implements Serializable {
 
 	@Id
@@ -50,7 +53,7 @@ public class Employee implements Serializable {
 	@Column(name = "DOJ")
 	private Date dateOfJoining;
 
-	@Column(nullable = false, columnDefinition = "Varchar(30)", name = "DESIGNATION")
+	@Column(nullable = false, columnDefinition = "Varchar(100)", name = "DESIGNATION")
 	private String designation;
 
 	@Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL", unique = true)
@@ -63,10 +66,10 @@ public class Employee implements Serializable {
 	private String gender;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "DOB", nullable = false)
+	@Column(name = "DOB")
 	private Date dateOfBirth;
 
-	@Column(name = "PASSWORD", nullable = false)
+	@Column(name = "PASSWORD")
 	private String password;
 
 	@Column(name = "IS_ACTIVE", columnDefinition="tinyint(1) default 0")
@@ -216,8 +219,4 @@ public class Employee implements Serializable {
 		return Objects.hash(id);
 	}
 
-	@Override
-	public String toString() {
-		return "Employee{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", dateOfJoining=" + dateOfJoining + ", designation='" + designation + '\'' + ", email='" + email + '\'' + ", contactNumber='" + contactNumber + '\'' + ", gender='" + gender + '\'' + ", courses=" + courses + '}';
-	}
 }
