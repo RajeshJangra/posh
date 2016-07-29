@@ -91,7 +91,7 @@ CREATE TABLE `employee` (
   `DESIGNATION` varchar(100) NOT NULL,
   `DOB` date DEFAULT NULL,
   `EMAIL` varchar(50) NOT NULL,
-  `EMP_ID` varchar(5) NOT NULL,
+  `EMP_ID` varchar(7) NOT NULL,
   `TYPE` varchar(30) NOT NULL,
   `GENDER` varchar(6) NOT NULL,
   `IS_ACTIVE` tinyint(1) DEFAULT '0',

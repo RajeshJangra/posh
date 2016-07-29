@@ -37,7 +37,7 @@ public class Employee implements Serializable {
 	@Column(name = "ID")
 	private long id;
 
-	@Column(name = "EMP_ID", nullable = false, unique = true, columnDefinition = "Varchar(5)")
+	@Column(name = "EMP_ID", nullable = false, unique = true, columnDefinition = "Varchar(7)")
 	private String empId;
 
 	@Column(nullable = false, columnDefinition = "Varchar(100)", name = "NAME")
