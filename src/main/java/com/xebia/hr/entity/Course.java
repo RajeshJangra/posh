@@ -51,10 +51,10 @@ public class Course implements Serializable {
 		this.pdfPath = pdfPath;
 	}
 
-	@Column(nullable = false, columnDefinition = "Varchar(200)", name = "VIDEO_FILE_PATH")
+	@Column(columnDefinition = "Varchar(200)", name = "VIDEO_FILE_PATH")
     private String videoURL;
 
-    @Column(nullable = false, columnDefinition = "Varchar(200)", name = "PDF_FILE_PATH")
+    @Column(columnDefinition = "Varchar(200)", name = "PDF_FILE_PATH")
     private String pdfPath;
 
     
