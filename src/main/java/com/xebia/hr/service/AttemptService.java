@@ -57,4 +57,12 @@ public class AttemptService {
     	return attemptRepository.findByCourseAndEmployee(course, employee);
     };
     
+    public List<Attempt> findAllAttempts() {
+        return attemptRepository.findAll();
+    }
+    
+    public List<Attempt> findByCourse(Course course){
+    	return attemptRepository.findByCourse(course);
+    }
+    
 }
