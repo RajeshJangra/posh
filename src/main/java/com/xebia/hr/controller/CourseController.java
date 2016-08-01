@@ -108,15 +108,17 @@ public class CourseController {
     	
     	//if emp is already passed the course, no need to start
     	List<Attempt> attempts = attemptService.findByCourseAndEmployee(courseId, empId);
-   		Collections.sort(attempts);
-    	Attempt latestAttempt = attempts.get(attempts.size()-1);
-    	if(AppConstants.PASSED.equals(latestAttempt.getResult())){
-    		return ResponseEntity.badRequest().body("Employee already cleared the test. Can not take test again.");
-    	}
-    	
-    	//If emp attempted 3 times then block the course
-    	if(attempts.size() >= 3){
-    		return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
+    	if(attempts != null && attempts.size() > 0){
+    		Collections.sort(attempts);
+    		Attempt latestAttempt = attempts.get(attempts.size()-1);
+    		if(AppConstants.PASSED.equals(latestAttempt.getResult())){
+        		return ResponseEntity.badRequest().body("Employee already cleared the test. Can not take test again.");
+        	}
+    		
+    		//If emp attempted 3 times then block the course
+        	if(attempts.size() >= 3){
+        		return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
+        	}
     	}
     	
 		try{
