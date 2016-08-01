@@ -24,7 +24,7 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     @Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
     private String maxScore;
 
-    @Column(columnDefinition = "Varchar(6)", name = "RESULT")
+    @Column(columnDefinition = "Varchar(20)", name = "RESULT")
     private String result;
     
     @Column(name = "START_TIME", nullable=false)

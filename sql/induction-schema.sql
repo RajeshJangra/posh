@@ -28,7 +28,7 @@ CREATE TABLE `attempt` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `FINISH_TIME` datetime DEFAULT NULL,
   `MAX_SCORE` int(3) DEFAULT NULL,
-  `RESULT` varchar(6) DEFAULT NULL,
+  `RESULT` varchar(20) DEFAULT NULL,
   `SCORE` int(3) DEFAULT NULL,
   `START_TIME` datetime NOT NULL,
   `COURSE_ID` bigint(20) NOT NULL,
