@@ -132,10 +132,9 @@ CREATE TABLE `question` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ANSWER` varchar(1) NOT NULL,
   `DESCRIPTION` varchar(1000) NOT NULL,
-  `NAME` varchar(30) NOT NULL,
+  `NAME` varchar(30) DEFAULT NULL,
   `COURSE_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_84npujpjr090ii424a130asgl` (`NAME`),
   KEY `FK_nc35b7aoollxpxjre4hrx0wty` (`COURSE_ID`),
   CONSTRAINT `FK_nc35b7aoollxpxjre4hrx0wty` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
