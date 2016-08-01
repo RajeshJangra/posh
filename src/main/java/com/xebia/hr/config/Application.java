@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Created by anirudh on 13/07/15.
@@ -25,6 +26,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 @EntityScan(basePackages = {"com.xebia.hr.entity"})
 @EnableJpaRepositories(basePackages = {"com.xebia.hr.repository"})
 @Import({SecurityConfig.class})
+@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws Exception {

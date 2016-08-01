@@ -59,17 +59,11 @@ public class EmployeeDataFeeder {
 	@Scheduled(cron="${induction.schedule.employee-feeder.cron}")
 	public void updateEmployees(){
 
-		List<Employee> employees;
 		List<Employee> employeeToBeUpdated = new ArrayList<>();
 		try {
-			employees = getEmployeeFromExcel();
+			List<Employee> employees = getEmployeeFromExcel();
 			List<Employee> existingEmployees = employeeService.findAllEmployees();
 			for(Employee employee : employees){
-
-				String empId = employee.getEmpId();
-				if(StringUtils.isEmpty(empId)){
-					continue;
-				}
 
 				Optional<Employee> existingEmployee = getExistingEmployee(existingEmployees, employee.getEmpId());
 				if(existingEmployee.isPresent()){
@@ -133,7 +127,10 @@ public class EmployeeDataFeeder {
 				Employee employee = null;
 				try{
 					employee = getEmployee(row);
-					employees.add(employee);
+					String empId = employee.getEmpId();
+					if(!StringUtils.isEmpty(empId)){
+						employees.add(employee);
+					}
 				}catch(Exception e){
 					//Skipping the employee who do not have mandatory info in Excel
 					//We can send exception mail here as well
