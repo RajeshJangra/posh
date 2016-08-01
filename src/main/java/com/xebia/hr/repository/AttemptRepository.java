@@ -18,4 +18,6 @@ public interface AttemptRepository extends JpaRepository<Attempt, Long> {
 
 	public List<Attempt> findByCourseAndEmployee(Course course, Employee employee);
 	
+	public List<Attempt> findByCourse(Course course);
+	
 }
