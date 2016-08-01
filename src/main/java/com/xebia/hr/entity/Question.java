@@ -31,7 +31,7 @@ public class Question implements Serializable {
     @Column(nullable = false, columnDefinition = "Varchar(1000)", name = "DESCRIPTION")
     private String description;
 
-    @Column(nullable = false, columnDefinition = "Varchar(1)", name = "ANSWER")
+    @Column(columnDefinition = "Varchar(10)", name = "ANSWER")
     private String answer;
 
     @ManyToOne

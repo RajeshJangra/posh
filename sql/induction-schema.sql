@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ANSWER` varchar(1) NOT NULL,
+  `ANSWER` varchar(10) DEFAULT NULL,
   `DESCRIPTION` varchar(1000) NOT NULL,
   `NAME` varchar(30) DEFAULT NULL,
   `COURSE_ID` bigint(20) DEFAULT NULL,
