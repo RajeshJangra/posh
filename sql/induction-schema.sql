@@ -30,6 +30,7 @@ CREATE TABLE `attempt` (
   `MAX_SCORE` int(3) DEFAULT NULL,
   `RESULT` varchar(20) DEFAULT NULL,
   `SCORE` int(3) DEFAULT NULL,
+  `SCORE_PERCENT` double DEFAULT NULL,
   `START_TIME` datetime NOT NULL,
   `COURSE_ID` bigint(20) NOT NULL,
   `EMPLOYEE_ID` bigint(20) NOT NULL,
