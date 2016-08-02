@@ -1,5 +1,5 @@
-INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Prevention Of Sexual harrassment','POSH');
-INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Office manners desc','Office Etiquette');
+INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Prevention Of Sexual harrassment','POSH-Test');
+INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Office manners desc','Office Etiquette-Test');
 
 
 INSERT INTO `employee` (`CONTACT_NUMBER`, `DOB`, `DOJ`, `DESIGNATION`, `EMAIL`, `EMP_ID`, `TYPE`, `GENDER`, `IS_ACTIVE`, `LAST_PASSWORD_RESET`, `NAME`, `PASSWORD`) 

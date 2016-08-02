@@ -44,5 +44,9 @@ public class QuestionService {
     	}
     	return dtos;
 	}
+	
+	public Question save(Question question){
+		return questionRepository.save(question);
+	}
     
 }
