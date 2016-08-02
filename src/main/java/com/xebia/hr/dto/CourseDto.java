@@ -11,7 +11,9 @@ public class CourseDto {
 
 	private long id;
 	private String name;
-	private String score;
+	private int score;
+	private double scoreInPercent;
+	private int maxScore;
 	private String result;
 	private int attemptCount;
 	

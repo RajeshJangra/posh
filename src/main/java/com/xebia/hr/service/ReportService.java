@@ -13,7 +13,6 @@ import com.xebia.hr.constants.AppConstants;
 import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Employee;
-import com.xebia.hr.utils.CommonUtils;
 
 /**
  * @author gauravagrawal
@@ -52,15 +51,14 @@ public class ReportService {
 			int attempsCount = 0;
 			boolean isAppeared = false;
 			boolean isCleared = false;
-			int score = 0;
+			double score = 0;
 			for (Attempt attempt : attempts) {
 				if (employee.getId() == attempt.getEmployee().getId()) {
 					isAppeared = true;
 					++attempsCount;
 					if (AppConstants.PASSED.equals(attempt.getResult())) {
 						isCleared = true;
-						score = CommonUtils.calculatepercentage(Integer.parseInt(attempt.getScore()),
-								Integer.parseInt(attempt.getMaxScore()));
+						score = attempt.getScoreInPercent();
 					}
 				}
 			}

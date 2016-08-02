@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import com.xebia.hr.constants.AppConstants;
+
 /**
  * Created by rajeshkumar on 05/09/15.
  */
@@ -19,11 +21,18 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Attempt extends AbstractPersistable<Long> implements Serializable, Comparable<Attempt> {
 
     @Column(columnDefinition = "Integer(3)", name = "SCORE")
-    private String score;
+    private Integer score;
 
     @Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
-    private String maxScore;
+    private Integer maxScore;
+    
+    @Column(name = "SCORE_PERCENT")
+    private Double scoreInPercent;
 
+    /**
+	 * Courses's result states
+	 * @see AppConstants.PASSED etc
+	 */
     @Column(columnDefinition = "Varchar(20)", name = "RESULT")
     private String result;
     
@@ -41,19 +50,19 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     @JoinColumn(name = "EMPLOYEE_ID", nullable=false)
     private Employee employee;
 
-    public String getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(final String score) {
+    public void setScore(final Integer score) {
         this.score = score;
     }
 
-    public String getMaxScore() {
+    public Integer getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(final String maxScore) {
+    public void setMaxScore(final Integer maxScore) {
         this.maxScore = maxScore;
     }
 
@@ -95,6 +104,14 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
 
 	public void setFinishTime(Timestamp finishTime) {
 		this.finishTime = finishTime;
+	}
+	
+	public Double getScoreInPercent() {
+		return scoreInPercent;
+	}
+
+	public void setScoreInPercent(Double scoreInPercent) {
+		this.scoreInPercent = scoreInPercent;
 	}
 
 	@Override
