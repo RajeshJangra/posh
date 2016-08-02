@@ -13,8 +13,6 @@ import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Employee;
 import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.repository.AttemptRepository;
-import com.xebia.hr.repository.CourseRepository;
-import com.xebia.hr.repository.EmployeeRepository;
 
 
 /**
@@ -28,10 +26,10 @@ public class AttemptService {
     private AttemptRepository attemptRepository;
     
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseService courseService;
     
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
     
     public Attempt findOne(long id) throws Exception{
     	Attempt attempt = attemptRepository.findOne(id);
@@ -45,21 +43,22 @@ public class AttemptService {
     	return attemptRepository.save(attempt);
     }
     
-    public Attempt savePartially(long courseId, String empId){
-    	Course course = courseRepository.findOne(courseId);
-    	Employee employee = employeeRepository.findByEmpId(empId);
+    public Attempt savePartially(long courseId, String empId, int maxScore) throws NotFoundException{
+    	Course course = courseService.findOne(courseId);
+    	Employee employee = employeeService.findByEmpId(empId);
     	
     	Attempt attempt = new Attempt();
     	attempt.setCourse(course);
     	attempt.setEmployee(employee);
     	attempt.setStartTime( new Timestamp(System.currentTimeMillis()) );
     	attempt.setResult(AppConstants.IN_PROGRESS);
+    	attempt.setMaxScore(maxScore);
     	return attemptRepository.save(attempt);
     }
     
-    public List<Attempt> findByCourseAndEmployee(long courseId, String empId){
-    	Course course = courseRepository.findOne(courseId);
-    	Employee employee = employeeRepository.findByEmpId(empId);
+    public List<Attempt> findByCourseAndEmployee(long courseId, String empId) throws NotFoundException{
+    	Course course = courseService.findOne(courseId);
+    	Employee employee = employeeService.findByEmpId(empId);
     	return attemptRepository.findByCourseAndEmployee(course, employee);
     };
     

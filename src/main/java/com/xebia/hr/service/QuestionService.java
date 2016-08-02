@@ -1,8 +1,8 @@
 package com.xebia.hr.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,6 @@ import com.xebia.hr.Converter.QuestionConverter;
 import com.xebia.hr.dto.QuestionDto;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Question;
-import com.xebia.hr.exceptions.NotFoundException;
-import com.xebia.hr.repository.CourseRepository;
 import com.xebia.hr.repository.QuestionRepository;
 
 
@@ -27,18 +25,32 @@ public class QuestionService {
 	private QuestionRepository questionRepository;
 	
 	@Autowired
-	private CourseRepository courseRepository; 
+	private CourseService courseService; 
 	
-	public List<QuestionDto> findQuestions(long courseId) throws Exception {
-		Course course = courseRepository.findOne(courseId);
-		if(Objects.isNull(course)){
-			throw new NotFoundException("Invalid course id"+ courseId);
-		}
-		
+	public List<QuestionDto> findAllQuestions(long courseId) throws Exception {
+		Course course = courseService.findOne(courseId);
 		List<Question> questions = questionRepository.findByCourse(course);
 		
     	List<QuestionDto> dtos = new ArrayList<>(questions.size());
     	for(Question question : questions){
+    		QuestionDto dto = QuestionConverter.CONVERT_QUESTION_TO_QUESTION_DTO.apply(question);
+        	dtos.add(dto);
+    	}
+    	return dtos;
+	}
+	
+	public List<QuestionDto> findRandomQuestions(long courseId, int numberOfQuestions) throws Exception {
+		Course course = courseService.findOne(courseId);
+		List<Question> questions = questionRepository.findByCourse(course);
+		List<Question> randomQuestions = new ArrayList<>(numberOfQuestions);
+		
+		Collections.shuffle(questions);
+		int totalQues = questions.size();
+	    for (int i = 0; i < Math.min(numberOfQuestions, totalQues); i++) {
+	        randomQuestions.add( questions.get(i) );
+	    }
+	    List<QuestionDto> dtos = new ArrayList<>(numberOfQuestions);
+    	for(Question question : randomQuestions){
     		QuestionDto dto = QuestionConverter.CONVERT_QUESTION_TO_QUESTION_DTO.apply(question);
         	dtos.add(dto);
     	}

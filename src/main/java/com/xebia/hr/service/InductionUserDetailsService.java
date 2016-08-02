@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.xebia.hr.dto.UserDto;
 import com.xebia.hr.entity.Employee;
+import com.xebia.hr.exceptions.NotFoundException;
 
 @Service
 public class InductionUserDetailsService implements UserDetailsService{
@@ -18,8 +19,10 @@ public class InductionUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Employee employee = employeeService.findByEmpId(username);
-		if(employee == null){
+		Employee employee = null;
+		try {
+			employee = employeeService.findByEmpId(username);
+		} catch (NotFoundException e) {
 			throw new UsernameNotFoundException("Username " + username + " not found");
 		}
 		return new UserDto(employee);

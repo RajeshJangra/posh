@@ -1,5 +1,5 @@
-INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Prevention Of Sexual harrassment','POSH-Test');
-INSERT INTO `course` (`DESCRIPTION`, `NAME`) VALUES ('Office manners desc','Office Etiquette-Test');
+INSERT INTO `course` (`ID`, `DESCRIPTION`, `NAME`) VALUES (1, 'Prevention Of Sexual harrassment','POSH-Test');
+INSERT INTO `course` (`ID`, `DESCRIPTION`, `NAME`) VALUES (2, 'Office manners desc','Office Etiquette-Test');
 
 
 INSERT INTO `employee` (`CONTACT_NUMBER`, `DOB`, `DOJ`, `DESIGNATION`, `EMAIL`, `EMP_ID`, `TYPE`, `GENDER`, `IS_ACTIVE`, `LAST_PASSWORD_RESET`, `NAME`, `PASSWORD`) 
@@ -15,6 +15,12 @@ SELECT employee.id, course.id FROM employee, course ;
 INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q1 desc', 'Q1', 1);
 INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q2 desc', 'Q2', 1);
 INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q3 desc', 'Q3', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q4 desc', 'Q4', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q5 desc', 'Q5', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q6 desc', 'Q6', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q7 desc', 'Q7', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q8 desc', 'Q8', 1);
+INSERT INTO `question` (`ANSWER`, `DESCRIPTION`, `NAME`, `COURSE_ID`) VALUES ('1', 'Q9 desc', 'Q9', 1);
 
 
 INSERT INTO `choice` (`DESCRIPTION`, `QUESTION_ID`) VALUES ('A1', '1');

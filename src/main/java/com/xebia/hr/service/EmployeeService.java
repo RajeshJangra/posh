@@ -1,15 +1,17 @@
 package com.xebia.hr.service;
 
-import com.xebia.hr.entity.Course;
-import com.xebia.hr.entity.Employee;
-import com.xebia.hr.repository.CourseRepository;
-import com.xebia.hr.repository.EmployeeRepository;
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xebia.hr.entity.Course;
+import com.xebia.hr.entity.Employee;
+import com.xebia.hr.exceptions.NotFoundException;
+import com.xebia.hr.repository.EmployeeRepository;
 
 /**
  * Created by anirudh on 20/07/15.
@@ -22,7 +24,7 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseService courseService;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -32,16 +34,20 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee findByEmpId(String empId) {
-        return employeeRepository.findByEmpId(empId);
+    public Employee findByEmpId(String empId) throws NotFoundException {
+    	Employee employee = employeeRepository.findByEmpId(empId);
+    	if(Objects.isNull(employee)){
+			throw new NotFoundException("Invalid Employee: "+ empId);
+		}
+    	return employee;
     }
 
     public List<Employee> findAllEmployees() {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> findByCourseId(long courseId) {
-        Course course = courseRepository.findOne(courseId);
+    public List<Employee> findByCourseId(long courseId) throws NotFoundException {
+        Course course = courseService.findOne(courseId);
         return employeeRepository.findByCourses(course);
     }
     

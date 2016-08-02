@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.xebia.hr.Converter.CourseConverter;
@@ -15,6 +17,7 @@ import com.xebia.hr.dto.QuestionDto;
 import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Employee;
+import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.repository.AttemptRepository;
 import com.xebia.hr.repository.CourseRepository;
 import com.xebia.hr.utils.CommonUtils;
@@ -41,6 +44,9 @@ public class CourseService {
     
     @Autowired
 	private QuestionService questionService;
+    
+    @Value("${induction.course.score.pass.percent}")
+    private String coursePassPercent;
 
     public List<Course> findAll(){
     	List<Course> courses = courseRepository.findAll();
@@ -51,7 +57,7 @@ public class CourseService {
     	return courseRepository.save(course);
     }
     
-    public List<CourseDto> findCourses(String empId){
+    public List<CourseDto> findCourses(String empId) throws NotFoundException{
     	Employee employee = employeeService.findByEmpId(empId);
     	List<Course> courses = courseRepository.findByEmployees(employee);
     	
@@ -64,16 +70,19 @@ public class CourseService {
     	return dtos;
     }
     
-    public Course findOne(Long courseId){
-    	return courseRepository.findOne(courseId);
+    public Course findOne(Long courseId) throws NotFoundException{
+    	Course course = courseRepository.findOne(courseId);
+		if(Objects.isNull(course)){
+			throw new NotFoundException("Invalid course id: "+ courseId);
+		}
+    	return course;
     }
     
     public CourseDto submitCourse(List<QuestionDto> questions, long attemptId) throws Exception{
     	
     	Attempt attempt = attemptService.findOne(attemptId);
     	int actualScore = 0;
-		List<QuestionDto> actualQues = questionService.findQuestions(attempt.getCourse().getId());
-		int maxScore = actualQues.size();
+		List<QuestionDto> actualQues = questionService.findAllQuestions(attempt.getCourse().getId());
 
 		HashMap<Long, QuestionDto> questionmap = new HashMap<>();
 
@@ -87,15 +96,14 @@ public class CourseService {
 				actualScore++;
 			}
 		}
-		int percentage = CommonUtils.calculatepercentage(actualScore, maxScore); 
+		int percentage = CommonUtils.calculatepercentage(actualScore, attempt.getMaxScore()); 
 
-		if (percentage >= 90) {
+		if (percentage >= Integer.parseInt(coursePassPercent)) {
 			attempt.setResult(AppConstants.PASSED);
 		} else {
 			attempt.setResult(AppConstants.FAILED);
 		}
 		attempt.setFinishTime(new Timestamp(System.currentTimeMillis())); 
-		attempt.setMaxScore(maxScore);
 		attempt.setScore(actualScore);
 		attempt.setScoreInPercent(Double.valueOf(percentage)); 
 		attemptService.save(attempt);

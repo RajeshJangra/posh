@@ -1,9 +1,9 @@
 package com.xebia.hr.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xebia.hr.dto.CourseDto;
 import com.xebia.hr.entity.Employee;
+import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.EmployeeService;
 
@@ -35,18 +35,33 @@ public class EmployeeController {
 
     @RequestMapping(value = "{empId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value="hasRole('admin')")
-    public Employee findUserbyId(@PathVariable String empId) {
-        return employeeService.findByEmpId(empId);
+    public ResponseEntity<?> findUserbyId(@PathVariable String empId) {
+    	try {
+    		return ResponseEntity.ok( employeeService.findByEmpId(empId) );
+		} catch (NotFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value="hasRole('admin')")
-    public List<Employee> findAllEmployees(@RequestParam(required=false) Long courseId) {
-        return courseId == null ? employeeService.findAllEmployees() : employeeService.findByCourseId(courseId);
+    public ResponseEntity<?> findAllEmployees(@RequestParam(required=false) Long courseId) {
+    	if(courseId == null){
+    		return ResponseEntity.ok(employeeService.findAllEmployees());
+    	}
+    	try {
+    		return ResponseEntity.ok( employeeService.findByCourseId(courseId) );
+		} catch (NotFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
     }
     
     @RequestMapping(value="/{empId}/courses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CourseDto> findCourses(@PathVariable String empId) {
-    	return courseService.findCourses(empId);
+    public ResponseEntity<?> findCourses(@PathVariable String empId) {
+    	try {
+    		return ResponseEntity.ok( courseService.findCourses(empId) );
+		} catch (NotFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
     }
 }

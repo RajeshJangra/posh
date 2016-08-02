@@ -4,11 +4,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,6 +49,9 @@ public class CourseController {
 
 	@Autowired
 	private ResourceLoader resourceLoader;
+	
+	@Value("${induction.course.quiz.question.limit}")
+	private String quizQuesLimit;
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Course> findAll() {
@@ -61,11 +64,8 @@ public class CourseController {
 		Course course = null;
 		try{
 			course = courseService.findOne(courseId);
-			if(Objects.isNull(course)){
-				throw new Exception();
-			}
 		}catch(Exception e){
-			return new ResponseEntity("Course not found for "+courseId, HttpStatus.NOT_FOUND);
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 
 		try(InputStream iStream = resourceLoader.getResource("classpath:public/SamplePDFFile_5mb.pdf").getInputStream()){
@@ -91,7 +91,7 @@ public class CourseController {
 	@RequestMapping(value="/{courseId}/questions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findQuestions(@PathVariable long courseId) {
 		try{
-			List<QuestionDto> questions = questionService.findQuestions(courseId);
+			List<QuestionDto> questions = questionService.findAllQuestions(courseId);
 			return ResponseEntity.ok(questions);
 		} catch(NotFoundException nfe){
 			return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
@@ -102,25 +102,25 @@ public class CourseController {
 
 	@RequestMapping(value="/{courseId}/start/{empId}", method = RequestMethod.GET)
 	public ResponseEntity<?> startCourse(@PathVariable long courseId, @PathVariable String empId) {
-
-		//if emp is already passed the course, no need to start
-		List<Attempt> attempts = attemptService.findByCourseAndEmployee(courseId, empId);
-		if(attempts != null && attempts.size() > 0){
-			Collections.sort(attempts);
-			Attempt latestAttempt = attempts.get(attempts.size()-1);
-			if(AppConstants.PASSED.equals(latestAttempt.getResult())){
-				return ResponseEntity.badRequest().body("Employee already cleared the test. Can not take test again.");
-			}
-
-			//If emp attempted 3 times then block the course
-			if(attempts.size() >= 3){
-				return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
-			}
-		}
-
 		try{
-			Attempt attempt = attemptService.savePartially(courseId, empId);
-			List<QuestionDto> questions = questionService.findQuestions(courseId);
+			//if emp is already passed the course, no need to start
+			List<Attempt> attempts = attemptService.findByCourseAndEmployee(courseId, empId);
+			if(attempts != null && attempts.size() > 0){
+				Collections.sort(attempts);
+				Attempt latestAttempt = attempts.get(attempts.size()-1);
+				if(AppConstants.PASSED.equals(latestAttempt.getResult())){
+					return ResponseEntity.badRequest().body("Employee already cleared the test. Can not take test again.");
+				}
+
+				//If emp attempted 3 times then block the course
+				if(attempts.size() >= 3){
+					return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
+				}
+			}
+			
+			int quesLimit = Integer.parseInt(quizQuesLimit);
+			List<QuestionDto> questions = questionService.findRandomQuestions(courseId, quesLimit);
+			Attempt attempt = attemptService.savePartially(courseId, empId, questions.size());
 			return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions));
 		} catch(NotFoundException nfe){
 			return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
