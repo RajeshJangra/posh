@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xebia.hr.dto.BasicResponse;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.ReportService;
@@ -39,7 +40,7 @@ public class ReportController {
 			XSSFWorkbook workbook = reportService.getCourseReport(course);
 			workbook.write(response.getOutputStream());
 			workbook.close();
-			return ResponseEntity.ok("");
+			return ResponseEntity.ok(new BasicResponse(""));
 		} catch (Exception e) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);

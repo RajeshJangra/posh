@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xebia.hr.constants.AppConstants;
+import com.xebia.hr.dto.BasicResponse;
 import com.xebia.hr.dto.LoginRequestDto;
 import com.xebia.hr.dto.LoginResponseDto;
 import com.xebia.hr.dto.UserDto;
@@ -96,7 +97,7 @@ public class AuthenticationController {
 			employee.setPassword(user.getPassword());
 			employee.setLastPasswordReset( new Date(System.currentTimeMillis()) );
 			employeeService.createEmployee(employee);
-			return ResponseEntity.ok("Password changes successfully.");
+			return ResponseEntity.ok(new BasicResponse("Password changes successfully."));
 		} catch (Exception e) {
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

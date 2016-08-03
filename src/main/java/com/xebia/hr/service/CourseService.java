@@ -78,7 +78,7 @@ public class CourseService {
     	return course;
     }
     
-    public CourseDto submitCourse(List<QuestionDto> questions, long attemptId) throws Exception{
+    public void submitCourse(List<QuestionDto> questions, long attemptId) throws Exception{
     	
     	Attempt attempt = attemptService.findOne(attemptId);
     	int actualScore = 0;
@@ -107,8 +107,11 @@ public class CourseService {
 		attempt.setScore(actualScore);
 		attempt.setScoreInPercent(Double.valueOf(percentage)); 
 		attemptService.save(attempt);
-
-    	return CourseConverter.CONVERT_ATTEMPT_TO_COURSE_DTO.apply(attempt);
     }
+
+	public CourseDto getScoreCard(long attemptId) throws Exception {
+		Attempt attempt = attemptService.findOne(attemptId);
+		return CourseConverter.CONVERT_ATTEMPT_TO_COURSE_DTO.apply(attempt);
+	}
     
 }

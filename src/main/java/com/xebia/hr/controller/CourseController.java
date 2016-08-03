@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xebia.hr.constants.AppConstants;
+import com.xebia.hr.dto.BasicResponse;
 import com.xebia.hr.dto.CourseDto;
 import com.xebia.hr.dto.QuestionDto;
 import com.xebia.hr.dto.QuestionsWrapper;
@@ -81,7 +82,7 @@ public class CourseController {
 				}
 			}
 			response.flushBuffer();
-			return ResponseEntity.ok("");
+			return ResponseEntity.ok(new BasicResponse(""));
 		}catch(Exception e){
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -134,7 +135,19 @@ public class CourseController {
 
 		// In-case of submit/quit/session timeout
 		try{
-			CourseDto dto = courseService.submitCourse(questions, attemptId);
+			courseService.submitCourse(questions, attemptId);
+			return ResponseEntity.ok(new BasicResponse("Course submitted successfully."));
+		} catch(NotFoundException nfe){
+			return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
+		} catch(Exception e){
+			return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/scorecard/{attemptId}")
+	public ResponseEntity<?> getScoreCard(@PathVariable long attemptId) throws Exception {
+		try{
+			CourseDto dto = courseService.getScoreCard(attemptId);
 			return ResponseEntity.ok(dto);
 		} catch(NotFoundException nfe){
 			return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
