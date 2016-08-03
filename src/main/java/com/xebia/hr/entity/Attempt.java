@@ -21,13 +21,13 @@ import com.xebia.hr.constants.AppConstants;
 public class Attempt extends AbstractPersistable<Long> implements Serializable, Comparable<Attempt> {
 
     @Column(columnDefinition = "Integer(3)", name = "SCORE")
-    private Integer score;
+    private int score;
 
     @Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
-    private Integer maxScore;
+    private int maxScore;
     
     @Column(name = "SCORE_PERCENT")
-    private Double scoreInPercent;
+    private double scoreInPercent;
 
     /**
 	 * Courses's result states
@@ -50,19 +50,19 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     @JoinColumn(name = "EMPLOYEE_ID", nullable=false)
     private Employee employee;
 
-    public Integer getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(final Integer score) {
+    public void setScore(final int score) {
         this.score = score;
     }
 
-    public Integer getMaxScore() {
+    public int getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(final Integer maxScore) {
+    public void setMaxScore(final int maxScore) {
         this.maxScore = maxScore;
     }
 
@@ -106,11 +106,11 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
 		this.finishTime = finishTime;
 	}
 	
-	public Double getScoreInPercent() {
+	public double getScoreInPercent() {
 		return scoreInPercent;
 	}
 
-	public void setScoreInPercent(Double scoreInPercent) {
+	public void setScoreInPercent(double scoreInPercent) {
 		this.scoreInPercent = scoreInPercent;
 	}
 
