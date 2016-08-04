@@ -15,5 +15,6 @@ public class QuestionsWrapper {
 
 	private long attemptId;
 	private List<QuestionDto> questions;
+	private int timerInSecs;
 	
 }

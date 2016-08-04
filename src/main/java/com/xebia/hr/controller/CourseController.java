@@ -56,6 +56,9 @@ public class CourseController {
 	
 	@Value("${induction.course.maxAttempt}")
 	private Integer maxAttempt;
+	
+	@Value("${induction.course.timerInSecs}")
+	private Integer timerInSecs;
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Course> findAll() {
@@ -124,7 +127,7 @@ public class CourseController {
 			
 			List<QuestionDto> questions = questionService.findRandomQuestions(courseId, quizQuesLimit);
 			Attempt attempt = attemptService.savePartially(courseId, empId, questions.size());
-			return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions));
+			return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions, timerInSecs));
 		} catch(NotFoundException nfe){
 			return new ResponseEntity(nfe.getMessage(), HttpStatus.NOT_FOUND);
 		} catch(Exception e){
