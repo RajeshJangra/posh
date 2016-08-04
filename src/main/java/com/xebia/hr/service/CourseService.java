@@ -84,33 +84,41 @@ public class CourseService {
     
     public void submitCourse(List<QuestionDto> questions, long attemptId) throws Exception{
     	
-    	Attempt attempt = attemptService.findOne(attemptId);
-    	int actualScore = 0;
-		List<QuestionDto> actualQues = questionService.findAllQuestions(attempt.getCourse().getId());
+    	try {
+			Attempt attempt = attemptService.findOne(attemptId);
+			int actualScore = 0;
+			List<QuestionDto> actualQues = questionService.findAllQuestions(attempt.getCourse().getId());
 
-		HashMap<Long, QuestionDto> questionmap = new HashMap<>();
+			HashMap<Long, QuestionDto> questionmap = new HashMap<>();
 
-		for(QuestionDto question : actualQues){
-			questionmap.put(Long.valueOf(question.getId()), question);
-		}
-
-		for (QuestionDto question : questions) {
-			QuestionDto questiondb = questionmap.get(question.getId());
-			if (question.getSelectedChoiceId().equals(questiondb.getCorrectChoiceId())) {
-				actualScore++;
+			for(QuestionDto question : actualQues){
+				questionmap.put(Long.valueOf(question.getId()), question);
 			}
-		}
-		int percentage = CommonUtils.calculatepercentage(actualScore, attempt.getMaxScore()); 
 
-		if (percentage >= coursePassPercent) {
-			attempt.setResult(AppConstants.PASSED);
-		} else {
-			attempt.setResult(AppConstants.FAILED);
+			for (QuestionDto question : questions) {
+				QuestionDto questiondb = questionmap.get(question.getId());
+				String selectedChoiceId = question.getSelectedChoiceId();
+				if(Objects.nonNull(selectedChoiceId)){
+					if (questiondb.getCorrectChoiceId().equals(selectedChoiceId)) {
+						actualScore++;
+					}
+				}
+			}
+			int percentage = CommonUtils.calculatepercentage(actualScore, attempt.getMaxScore()); 
+
+			if (percentage >= coursePassPercent) {
+				attempt.setResult(AppConstants.PASSED);
+			} else {
+				attempt.setResult(AppConstants.FAILED);
+			}
+			attempt.setFinishTime(new Timestamp(System.currentTimeMillis())); 
+			attempt.setScore(actualScore);
+			attempt.setScoreInPercent(Double.valueOf(percentage)); 
+			attemptService.save(attempt);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
-		attempt.setFinishTime(new Timestamp(System.currentTimeMillis())); 
-		attempt.setScore(actualScore);
-		attempt.setScoreInPercent(Double.valueOf(percentage)); 
-		attemptService.save(attempt);
     }
 
 	public CourseDto getScoreCard(long attemptId) throws Exception {
