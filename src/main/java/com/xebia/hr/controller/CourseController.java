@@ -52,7 +52,10 @@ public class CourseController {
 	private ResourceLoader resourceLoader;
 	
 	@Value("${induction.course.quiz.question.limit}")
-	private String quizQuesLimit;
+	private Integer quizQuesLimit;
+	
+	@Value("${induction.course.maxAttempt}")
+	private Integer maxAttempt;
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Course> findAll() {
@@ -114,13 +117,12 @@ public class CourseController {
 				}
 
 				//If emp attempted 3 times then block the course
-				if(attempts.size() >= 3){
+				if(attempts.size() >= maxAttempt){
 					return ResponseEntity.badRequest().body("Number of course attempt limit is exceeded.");
 				}
 			}
 			
-			int quesLimit = Integer.parseInt(quizQuesLimit);
-			List<QuestionDto> questions = questionService.findRandomQuestions(courseId, quesLimit);
+			List<QuestionDto> questions = questionService.findRandomQuestions(courseId, quizQuesLimit);
 			Attempt attempt = attemptService.savePartially(courseId, empId, questions.size());
 			return ResponseEntity.ok(new QuestionsWrapper(attempt.getId(), questions));
 		} catch(NotFoundException nfe){
