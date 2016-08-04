@@ -46,7 +46,10 @@ public class CourseService {
 	private QuestionService questionService;
     
     @Value("${induction.course.score.pass.percent}")
-    private String coursePassPercent;
+    private Integer coursePassPercent;
+    
+    @Value("${induction.course.maxAttempt}")
+	private Integer maxAttempt;
 
     public List<Course> findAll(){
     	List<Course> courses = courseRepository.findAll();
@@ -65,6 +68,7 @@ public class CourseService {
     	for(Course course : courses){
     		List<Attempt> attempts = attemptRepository.findByCourseAndEmployee(course, employee);
     		CourseDto courseDto = CourseConverter.CONVERT_COURSE_TO_COURSE_DTO.apply(attempts, course);
+    		courseDto.setMaxAttempt(maxAttempt);
         	dtos.add(courseDto);
     	}
     	return dtos;
@@ -98,7 +102,7 @@ public class CourseService {
 		}
 		int percentage = CommonUtils.calculatepercentage(actualScore, attempt.getMaxScore()); 
 
-		if (percentage >= Integer.parseInt(coursePassPercent)) {
+		if (percentage >= coursePassPercent) {
 			attempt.setResult(AppConstants.PASSED);
 		} else {
 			attempt.setResult(AppConstants.FAILED);

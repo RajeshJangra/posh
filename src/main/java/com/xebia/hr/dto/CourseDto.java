@@ -16,5 +16,6 @@ public class CourseDto {
 	private int maxScore;
 	private String result;
 	private int attemptCount;
+	private int maxAttempt;
 	
 }
