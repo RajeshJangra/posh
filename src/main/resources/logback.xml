@@ -14,15 +14,12 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
-  <logger name="net.javabeat.service" level="WARN">
-    <appender-ref ref="FILE" />
-  </logger>
-  <logger name="net.javabeat.model" level="INFO">
-    <appender-ref ref="FILE" />
-  </logger>
-
   <!-- Setting the root level of logging to INFO -->
   <root level="info">
     <appender-ref ref="FILE" />
+  </root>
+  <!-- Setting the root level of logging to INFO -->
+  <root level="info">
+    <appender-ref ref="STDOUT" />
   </root>
 </configuration>

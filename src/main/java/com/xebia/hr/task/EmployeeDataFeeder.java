@@ -3,13 +3,13 @@ package com.xebia.hr.task;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class EmployeeDataFeeder {
 
 	@Autowired
 	private MailService mailService;
-	
+
 	@Autowired
 	private CourseService courseService;
 
@@ -82,20 +82,25 @@ public class EmployeeDataFeeder {
 					existingEmployee.get().setName(employee.getName());
 					existingEmployee.get().setDesignation(employee.getDesignation());
 					existingEmployee.get().setEmpType(employee.getEmpType());
+					existingEmployee.get().setAuthorities(employee.getAuthorities());
+					existingEmployee.get().setContactNumber(employee.getContactNumber());
+					existingEmployee.get().setDateOfBirth(employee.getDateOfBirth());
+					existingEmployee.get().setDateOfJoining(employee.getDateOfJoining());
+					existingEmployee.get().setEmail(employee.getEmail());
+					existingEmployee.get().setGender(employee.getGender());
 					employee = existingEmployee.get();
-					logger.info("Update existing employee: "+employee);
 				}else{
+					logger.info("New employee to be added: "+employee.getEmpId());
 					//By default, we set password as date of birth, format is ddMMyyyy like 02032013 - 2 March 2013
 					employee.setPassword( passwordEncoder.encode(passwordDateFormat.format(employee.getDateOfBirth())) );
 					employee.setLastPasswordReset(CURRENT_DATE);
 					employee.setActive(true);
-					logger.info("Add new employee: "+employee);
 				}
 				employee.setCourses(uniqueCourses);
 				employeeToBeUpdated.add(employee);
 			}
 			employeeService.save(employeeToBeUpdated);
-			logger.info("Updated the employees.");
+			logger.info("Successfully updated the employees.");
 		} catch (Exception e1) {
 			logger.error("Error:", e1);
 			sendExceptionMail(e1);
@@ -123,10 +128,10 @@ public class EmployeeDataFeeder {
 	private List<Employee> getEmployeeFromExcel() throws Exception{
 		List<Employee> employees = null;
 
-		logger.info("Reading employees from "+employeeExcelPath);
 		try(	InputStream fs = new FileInputStream (new File(employeeExcelPath));
 				Workbook workbook = WorkbookFactory.create(fs) 
 				){
+			logger.info("Reading employees from "+employeeExcelPath);
 			employees = new ArrayList<>();
 			Sheet sheet = workbook.getSheetAt(0);
 
@@ -141,59 +146,66 @@ public class EmployeeDataFeeder {
 					continue;
 				}
 
-				Employee employee = null;
-				try{
-					employee = getEmployee(row);
-					String empId = employee.getEmpId();
-					if(!StringUtils.isEmpty(empId)){
-						employees.add(employee);
-					}
-				}catch(Exception e){
-					logger.error("Skipping the employee who do not have mandatory info in Excel", e);
-					//Skipping the employee who do not have mandatory info in Excel
-					//We can send exception mail here as well
+				Employee employee = getEmployee(row);
+				if(Objects.nonNull(employee)){
+					employees.add(employee);
 				}
 			}
 		}catch(Exception e){
-			logger.error("Error:", e);
 			throw e;
 		}
 		return employees;
 	}
 
-	private Employee getEmployee(Row row) throws Exception{
-		Employee employee = null;
+	private Employee getEmployee(Row row){
 		try {
-			employee = new Employee();
-
-			employee.setEmpId(row.getCell(1).getStringCellValue().trim());
-			logger.info("Getting employee details for "+employee.getEmpId());
+			Employee employee = new Employee();
+			
+			String empId = row.getCell(1).getStringCellValue().trim();
+			logger.info("Reading employee details for "+empId);
+			employee.setEmpId(empId);
+			
 			employee.setName(row.getCell(2).getStringCellValue().trim());
 			employee.setEmpType(row.getCell(4, Row.CREATE_NULL_AS_BLANK).getStringCellValue().trim());
 
-			employee.setDateOfBirth(parseDate(row.getCell(5)));
-			employee.setDateOfJoining(parseDate(row.getCell(6)));
+			Date dob = parseDate(row.getCell(5));
+			Date doj = parseDate(row.getCell(6));
+			if(Objects.isNull(dob) || Objects.isNull(doj)){
+				throw new IllegalArgumentException("DOB and DOJ are must");
+			}
+			employee.setDateOfBirth(dob);
+			employee.setDateOfJoining(doj);
 			employee.setDesignation(row.getCell(8).getStringCellValue().trim());
 			employee.setEmail(row.getCell(10).getStringCellValue().trim());
 			employee.setGender(row.getCell(12, Row.CREATE_NULL_AS_BLANK).getStringCellValue().trim());
-			employee.setAuthorities(row.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue().trim());
+			
+			String authorities = row.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue().trim();
+			if(StringUtils.isEmpty(authorities)){
+				authorities = "user";
+			}
+			employee.setAuthorities(authorities);
+			return employee;
 		} catch (Exception e) {
-			logger.error("Error:", e);
-			throw e;
+			logger.error("Skipping the employee who do not have mandatory info in Excel", e);
+			return null;
 		}
-		return employee;
 	}
 
-	private Date parseDate(Cell cell) throws ParseException {
-		Date dob;
+	private Date parseDate(Cell cell) throws Exception {
+		Date dob = null;
 		try{
 			dob = cell.getDateCellValue();
+			return dob;
 		}catch(Exception e){
 			//If exception then try to convert string to date
-			String value = cell.getStringCellValue();
-			dob = excelDateFormat.parse(value);
+			String value = cell.getStringCellValue().trim();
+			try {
+				dob = excelDateFormat.parse(value);
+				return dob;
+			} catch (Exception e1) {
+				throw e1;
+			}
 		}
-		return dob;
 	}
 
 
