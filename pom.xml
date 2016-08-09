@@ -132,6 +132,7 @@
 
 	</dependencies>
 	<build>
+		<finalName>induction</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
