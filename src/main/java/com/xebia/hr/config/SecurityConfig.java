@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.authorizeRequests()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //Added to fix CORS issue
 				.antMatchers("/auth/**").permitAll()
+				.antMatchers("/report/**").permitAll()
 				.anyRequest().authenticated();
 
 		// Custom JWT based authentication
