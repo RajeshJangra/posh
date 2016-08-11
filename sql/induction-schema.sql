@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `induction`;
+
 CREATE DATABASE  IF NOT EXISTS `induction` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `induction`;
 -- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
@@ -68,7 +70,7 @@ DROP TABLE IF EXISTS `course`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `course` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `DESCRIPTION` varchar(100) NOT NULL,
+  `DESCRIPTION` varchar(300) NOT NULL,
   `NAME` varchar(30) NOT NULL,
   `PDF_FILE_PATH` varchar(200) DEFAULT NULL,
   `VIDEO_FILE_PATH` varchar(200) DEFAULT NULL,
