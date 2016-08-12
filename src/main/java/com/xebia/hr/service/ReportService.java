@@ -45,9 +45,8 @@ public class ReportService {
 				cell.setCellValue(AppConstants.COURSE_REPORT_HEADERS[i]);
 			}
 		}
-
+		int sNo = 0;
 		for (Employee employee : employees) {
-			int sNo = 0;
 			int attempsCount = 0;
 			boolean isAppeared = false;
 			boolean isCleared = false;
