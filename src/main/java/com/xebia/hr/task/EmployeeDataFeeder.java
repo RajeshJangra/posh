@@ -170,8 +170,8 @@ public class EmployeeDataFeeder {
 
 			Date dob = parseDate(row.getCell(5));
 			Date doj = parseDate(row.getCell(6));
-			if(Objects.isNull(dob) || Objects.isNull(doj)){
-				throw new IllegalArgumentException("DOB and DOJ are must");
+			if(Objects.isNull(dob)){
+				throw new IllegalArgumentException("DOB are must. Please provide in excel.");
 			}
 			employee.setDateOfBirth(dob);
 			employee.setDateOfJoining(doj);
