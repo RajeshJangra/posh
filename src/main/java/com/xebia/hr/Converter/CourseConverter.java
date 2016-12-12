@@ -18,6 +18,7 @@ public class CourseConverter {
 				CourseDto courseDto = new CourseDto();
 				courseDto.setId(course.getId());
 				courseDto.setName(course.getName());
+				courseDto.setDescription(course.getDescription());
 				if(attempts != null && attempts.size() > 0){
 					//Find latest attempt from attempts
 					Attempt attempt = getLatestAttempt(attempts);
