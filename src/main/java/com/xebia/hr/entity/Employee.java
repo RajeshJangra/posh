@@ -56,7 +56,7 @@ public class Employee implements Serializable {
 	@Column(nullable = false, columnDefinition = "Varchar(100)", name = "DESIGNATION")
 	private String designation;
 
-	@Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL", unique = true)
+	@Column(nullable = false, columnDefinition = "Varchar(50)", name = "EMAIL")
 	private String email;
 
 	@Column(columnDefinition = "Varchar(15)", name = "CONTACT_NUMBER")

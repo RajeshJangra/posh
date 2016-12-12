@@ -102,7 +102,6 @@ CREATE TABLE `employee` (
   `NAME` varchar(100) NOT NULL,
   `PASSWORD` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_m30joy0i68j6kajwwne0tf9of` (`EMAIL`),
   UNIQUE KEY `UK_2v3s04062qfuas8c5ops15w1k` (`EMP_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
