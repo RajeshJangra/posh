@@ -55,6 +55,17 @@ LOCK TABLES `question` WRITE;
 INSERT INTO `question` VALUES (1,'1','Is there any law for Prevention of Sexual Harassment at workplace?',NULL,1),(2,'6','What results to be termed as a case of sexual harassment',NULL,1),(3,'10','Who all can be a victim of sexual harassment?',NULL,1),(4,'14','What should you do if you or any of your collogue experience a harassment of such kind?',NULL,1),(5,'15','Does taking extra interest in colleague’s personal life with the intention of making intimacy include Sexual Harassment?',NULL,1),(6,'17','Does flirting with a colleague against his/ her wishes constitute act of Sexual Harassment?',NULL,1),(7,'20','Will anonymous complaint on this topic be entertained?',NULL,1),(8,'22','Does display of object of sexual nature (picture, posters , screen savers)at workplace constitute sexual harassment?',NULL,1),(9,'23','Does badgering or consistently pursuing a colleague to go out on date constitute sexual harassment?',NULL,1),(10,'25','Does offering a promotion or any other financial benefit at work in return for an intimate relationship amount to sexual harassment?',NULL,1),(11,'27','Does Xebia has an Internal Complaints Committee to deal with Sexual harassment complaints?',NULL,1),(12,'29','Is there any law for Prevention of Sexual Harassment at workplace?',NULL,1),(13,'34','To whom can the complaint be made?',NULL,1),(14,'38','What are the basic objective of the Prevention of Sexual Harassment Act?',NULL,1),(15,'39','Can it be considered a case of Sexual Harassment if both the parties involved are of same gender?',NULL,1),(16,'42','If most people find a comment Amusing and Inoffensive, then the one person who is offended does not have a right to complain about Harassment?',NULL,1);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Dumping data for table `employee_course`
+--
+LOCK TABLES `employee_course` WRITE, `employee` WRITE,  `course` WRITE;
+/*!40000 ALTER TABLE `employee_course` DISABLE KEYS */;
+INSERT INTO employee_course (EMPLOYEE_ID, COURSE_ID)
+SELECT employee.id, course.id FROM employee, course ;
+/*!40000 ALTER TABLE `employee_course` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

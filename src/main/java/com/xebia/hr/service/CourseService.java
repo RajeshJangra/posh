@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ import com.xebia.hr.utils.CommonUtils;
  */
 @Service
 public class CourseService {
+	
+	private final static Logger logger = LoggerFactory.getLogger(CourseService.class);
 	
 	@Autowired
 	private EmployeeService employeeService;
@@ -61,6 +65,7 @@ public class CourseService {
     }
     
     public List<CourseDto> findCourses(String empId) throws NotFoundException{
+    	logger.info("Getting courses for employee id:"+empId);
     	Employee employee = employeeService.findByEmpId(empId);
     	List<Course> courses = courseRepository.findByEmployees(employee);
     	
@@ -71,6 +76,7 @@ public class CourseService {
     		courseDto.setMaxAttempt(maxAttempt);
         	dtos.add(courseDto);
     	}
+    	logger.info("Returned courses: "+dtos);
     	return dtos;
     }
     

@@ -1,5 +1,7 @@
 package com.xebia.hr.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,8 @@ import com.xebia.hr.service.EmployeeService;
 @RequestMapping("/employee")
 public class EmployeeController {
 
+	private final static Logger log = LoggerFactory.getLogger(EmployeeController.class);
+	
     @Autowired
     private EmployeeService employeeService;
     
@@ -58,6 +62,7 @@ public class EmployeeController {
     
     @RequestMapping(value="/{empId}/courses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findCourses(@PathVariable String empId) {
+    	log.info("Calling findCourses: employeeId: "+empId);
     	try {
     		return ResponseEntity.ok( courseService.findCourses(empId) );
 		} catch (NotFoundException e) {
