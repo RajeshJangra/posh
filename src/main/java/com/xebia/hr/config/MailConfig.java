@@ -2,6 +2,8 @@ package com.xebia.hr.config;
 
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 public class MailConfig {
 
+	private final static Logger log = LoggerFactory.getLogger(MailConfig.class);
+	
 	@Autowired
     private Environment environment;
 	
@@ -30,7 +34,10 @@ public class MailConfig {
         sender.setUsername(environment.getRequiredProperty("mail.user"));
         sender.setPassword(environment.getRequiredProperty("mail.password"));
 		sender.setJavaMailProperties(javaMailProperties );
-
+		log.info("Setting Mail properties...");
+		log.info("Host: "+sender.getHost());
+		log.info("Post: "+sender.getPort());
+		log.info("User: "+sender.getUsername());
     	return sender;
     }
 	
