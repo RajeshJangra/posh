@@ -36,6 +36,7 @@ CREATE TABLE `attempt` (
   `START_TIME` datetime NOT NULL,
   `COURSE_ID` bigint(20) NOT NULL,
   `EMPLOYEE_ID` bigint(20) NOT NULL,
+  `POLICY_AGREED` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_5cx4havmq0v1hqxaxoxjrtgcq` (`COURSE_ID`),
   KEY `FK_b808u3ynlaaa04apae24ixcgd` (`EMPLOYEE_ID`),

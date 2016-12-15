@@ -53,6 +53,7 @@ public class AttemptService {
     	attempt.setStartTime( new Timestamp(System.currentTimeMillis()) );
     	attempt.setResult(AppConstants.IN_PROGRESS);
     	attempt.setMaxScore(maxScore);
+    	attempt.setPolicyAgreed(true);
     	return attemptRepository.save(attempt);
     }
     

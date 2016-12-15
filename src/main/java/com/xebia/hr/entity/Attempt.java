@@ -49,6 +49,9 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     @ManyToOne
     @JoinColumn(name = "EMPLOYEE_ID", nullable=false)
     private Employee employee;
+    
+    @Column(name = "POLICY_AGREED", columnDefinition="tinyint(1) default 0")
+    private boolean policyAgreed;
 
     public int getScore() {
         return score;
@@ -112,6 +115,14 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
 
 	public void setScoreInPercent(double scoreInPercent) {
 		this.scoreInPercent = scoreInPercent;
+	}
+	
+	public boolean isPolicyAgreed() {
+		return policyAgreed;
+	}
+
+	public void setPolicyAgreed(boolean policyAgreed) {
+		this.policyAgreed = policyAgreed;
 	}
 
 	@Override
