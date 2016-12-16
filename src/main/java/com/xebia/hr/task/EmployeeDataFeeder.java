@@ -187,6 +187,7 @@ public class EmployeeDataFeeder {
 			return employee;
 		} catch (Exception e) {
 			logger.error("Skipping the employee who do not have mandatory info in Excel", e);
+			sendExceptionMail(e);
 			return null;
 		}
 	}
