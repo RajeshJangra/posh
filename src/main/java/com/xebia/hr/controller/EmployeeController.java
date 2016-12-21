@@ -18,6 +18,7 @@ import com.xebia.hr.entity.Employee;
 import com.xebia.hr.exceptions.NotFoundException;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.EmployeeService;
+import com.xebia.hr.task.EmployeeDataFeeder;
 
 @RestController
 @RequestMapping("/employee")
@@ -30,6 +31,9 @@ public class EmployeeController {
     
     @Autowired
     private CourseService courseService;
+    
+    @Autowired
+    private EmployeeDataFeeder employeeDataFeeder;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value="hasRole('admin')")
@@ -66,6 +70,18 @@ public class EmployeeController {
     	try {
     		return ResponseEntity.ok( courseService.findCourses(empId) );
 		} catch (NotFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+    }
+    
+    @RequestMapping(value="/update", method = RequestMethod.GET)
+    @PreAuthorize(value="hasRole('admin')")
+    public ResponseEntity<?> updateEmployeesFromExcel() {
+    	log.info("Calling updateEmployeesFromExcel: Going to update the employee from excel");
+    	try {
+    		employeeDataFeeder.updateEmployees();
+    		return ResponseEntity.ok("Success");
+		} catch (Exception e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
     }
