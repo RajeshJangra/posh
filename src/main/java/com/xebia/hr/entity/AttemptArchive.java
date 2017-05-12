@@ -1,17 +1,13 @@
 package com.xebia.hr.entity;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
-import com.xebia.hr.constants.AppConstants;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Created by jasleen on 12/05/17.
@@ -20,116 +16,111 @@ import com.xebia.hr.constants.AppConstants;
 @Table(name = "ATTEMPT_ARCHIVE")
 public class AttemptArchive extends AbstractPersistable<Long> implements Serializable, Comparable<AttemptArchive> {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "ID")
-	private long id;
+    @Id
+    @Column(name = "ID")
+    private long id;
 
-	@Id
-	@GeneratedValue
-	@Column(name = "TRY_ID")
-	private long tryId;
+    @Column(columnDefinition = "Integer(3)", name = "SCORE")
+    private int score;
 
-	@Column(columnDefinition = "Integer(3)", name = "SCORE")
-	private int score;
+    @Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
+    private int maxScore;
 
-	@Column(columnDefinition = "Integer(3)", name = "MAX_SCORE")
-	private int maxScore;
+    @Column(name = "SCORE_PERCENT")
+    private double scoreInPercent;
 
-	@Column(name = "SCORE_PERCENT")
-	private double scoreInPercent;
+    @Column(columnDefinition = "Varchar(20)", name = "RESULT")
+    private String result;
 
-	/**
-	 * Courses's result states
-	 * 
-	 * @see AppConstants.PASSED etc
-	 */
-	@Column(columnDefinition = "Varchar(20)", name = "RESULT")
-	private String result;
+    @Column(name = "START_TIME", nullable = false)
+    private Timestamp startTime;
 
-	@Column(name = "START_TIME", nullable = false)
-	private Timestamp startTime;
+    @Column(name = "FINISH_TIME")
+    private Timestamp finishTime;
 
-	@Column(name = "FINISH_TIME")
-	private Timestamp finishTime;
+    @Column(name = "POLICY_AGREED", columnDefinition = "tinyint(1) default 0")
+    private boolean policyAgreed;
 
-	@Column(name = "POLICY_AGREED", columnDefinition = "tinyint(1) default 0")
-	private boolean policyAgreed;
+    public Long getId() {
+        return id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public int getScore() {
+        return score;
+    }
 
-	public Long getTryId() {
-		return tryId;
-	}
+    public void setScore(final int score) {
+        this.score = score;
+    }
 
-	public void setTryId(Long tryId) {
-		this.tryId = tryId;
-	}
+    public int getMaxScore() {
+        return maxScore;
+    }
 
-	public int getScore() {
-		return score;
-	}
+    public void setMaxScore(final int maxScore) {
+        this.maxScore = maxScore;
+    }
 
-	public void setScore(final int score) {
-		this.score = score;
-	}
+    public String getResult() {
+        return result;
+    }
 
-	public int getMaxScore() {
-		return maxScore;
-	}
+    public void setResult(final String result) {
+        this.result = result;
+    }
 
-	public void setMaxScore(final int maxScore) {
-		this.maxScore = maxScore;
-	}
+    public Timestamp getStartTime() {
+        return startTime;
+    }
 
-	public String getResult() {
-		return result;
-	}
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
 
-	public void setResult(final String result) {
-		this.result = result;
-	}
+    public Timestamp getFinishTime() {
+        return finishTime;
+    }
 
-	public Timestamp getStartTime() {
-		return startTime;
-	}
+    public void setFinishTime(Timestamp finishTime) {
+        this.finishTime = finishTime;
+    }
 
-	public void setStartTime(Timestamp startTime) {
-		this.startTime = startTime;
-	}
+    public double getScoreInPercent() {
+        return scoreInPercent;
+    }
 
-	public Timestamp getFinishTime() {
-		return finishTime;
-	}
+    public void setScoreInPercent(double scoreInPercent) {
+        this.scoreInPercent = scoreInPercent;
+    }
 
-	public void setFinishTime(Timestamp finishTime) {
-		this.finishTime = finishTime;
-	}
+    public boolean isPolicyAgreed() {
+        return policyAgreed;
+    }
 
-	public double getScoreInPercent() {
-		return scoreInPercent;
-	}
+    public void setPolicyAgreed(boolean policyAgreed) {
+        this.policyAgreed = policyAgreed;
+    }
 
-	public void setScoreInPercent(double scoreInPercent) {
-		this.scoreInPercent = scoreInPercent;
-	}
+    @Override
+    public int compareTo(AttemptArchive o) {
+        return this.startTime.compareTo(o.startTime);
+    }
 
-	public boolean isPolicyAgreed() {
-		return policyAgreed;
-	}
+    public AttemptArchive() {
+    }
 
-	public void setPolicyAgreed(boolean policyAgreed) {
-		this.policyAgreed = policyAgreed;
-	}
-
-	@Override
-	public int compareTo(AttemptArchive o) {
-		return this.startTime.compareTo(o.startTime);
-	}
+    public AttemptArchive(Attempt attempt) {
+        this.id = attempt.getId();
+        this.score = attempt.getScore();
+        this.maxScore = attempt.getMaxScore();
+        this.scoreInPercent = attempt.getScoreInPercent();
+        this.result = attempt.getResult();
+        this.startTime = attempt.getStartTime();
+        this.finishTime = attempt.getFinishTime();
+        this.policyAgreed = attempt.isPolicyAgreed();
+    }
 }
