@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+import com.xebia.hr.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class AttemptService {
     
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
     
     public Attempt findOne(long id) throws Exception{
     	Attempt attempt = attemptRepository.findOne(id);
@@ -70,5 +74,18 @@ public class AttemptService {
     public List<Attempt> findByCourse(Course course){
     	return attemptRepository.findByCourse(course);
     }
-    
+
+    public int countAttempts(Long employeeId) {
+        return attemptRepository.countDistinctAttemptsByEmployeeId(employeeId);
+    }
+
+    public void deleteAttempts() {
+        List<Attempt> attempts = attemptRepository.findAll();
+        for (Attempt attempt : attempts) {
+            int totalAttempts = countAttempts(attempt.getId());
+            if ((totalAttempts == 3) && (attempt.getResult() != "PASSED")) {
+                attemptRepository.delete(attempt.getId());
+            }
+        }
+    }
 }

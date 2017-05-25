@@ -1,17 +1,11 @@
 package com.xebia.hr.entity;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.xebia.hr.constants.AppConstants;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import com.xebia.hr.constants.AppConstants;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Created by rajeshkumar on 05/09/15.
@@ -19,6 +13,10 @@ import com.xebia.hr.constants.AppConstants;
 @Entity
 @Table(name = "ATTEMPT")
 public class Attempt extends AbstractPersistable<Long> implements Serializable, Comparable<Attempt> {
+
+    @Id
+    @Column(columnDefinition = "BigInteger(20)", name = "ID")
+    private Long id;
 
     @Column(columnDefinition = "Integer(3)", name = "SCORE")
     private int score;
@@ -52,6 +50,14 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     
     @Column(name = "POLICY_AGREED", columnDefinition="tinyint(1) default 0")
     private boolean policyAgreed;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getScore() {
         return score;

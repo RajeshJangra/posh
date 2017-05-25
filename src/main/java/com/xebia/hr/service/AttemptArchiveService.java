@@ -12,8 +12,10 @@ public class AttemptArchiveService {
     @Autowired
     private AttemptArchiveRepository attemptArchiveRepository;
 
-    public AttemptArchive create(Attempt attempt) {
+    public AttemptArchive createAttemptBackup(Attempt attempt) {
         return attemptArchiveRepository.save(new AttemptArchive(attempt));
     }
+
+
 
 }

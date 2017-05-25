@@ -17,8 +17,11 @@ import java.sql.Timestamp;
 public class AttemptArchive extends AbstractPersistable<Long> implements Serializable, Comparable<AttemptArchive> {
 
     @Id
-    @Column(name = "ID")
-    private long id;
+    @Column(columnDefinition = "BigInteger(20)", name = "ARCHIVE_ID")
+    private Long archiveId;
+
+    @Column(columnDefinition = "BigInteger(20)", name = "ATTEMPT_ID")
+    private Long attemptId;
 
     @Column(columnDefinition = "Integer(3)", name = "SCORE")
     private int score;
@@ -41,12 +44,20 @@ public class AttemptArchive extends AbstractPersistable<Long> implements Seriali
     @Column(name = "POLICY_AGREED", columnDefinition = "tinyint(1) default 0")
     private boolean policyAgreed;
 
-    public Long getId() {
-        return id;
+    public Long getArchiveId() {
+        return archiveId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setArchiveId(Long archiveId) {
+        this.archiveId = archiveId;
+    }
+
+    public long getAttemptId() {
+        return attemptId;
+    }
+
+    public void setAttemptId(Long attemptId) {
+        this.attemptId = attemptId;
     }
 
     public int getScore() {
@@ -114,7 +125,7 @@ public class AttemptArchive extends AbstractPersistable<Long> implements Seriali
     }
 
     public AttemptArchive(Attempt attempt) {
-        this.id = attempt.getId();
+        this.attemptId = attempt.getId();
         this.score = attempt.getScore();
         this.maxScore = attempt.getMaxScore();
         this.scoreInPercent = attempt.getScoreInPercent();

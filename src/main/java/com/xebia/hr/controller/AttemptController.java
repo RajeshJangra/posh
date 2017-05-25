@@ -11,7 +11,7 @@ import com.xebia.hr.service.AttemptArchiveService;
 import com.xebia.hr.service.AttemptService;
 
 @RestController
-@RequestMapping("/attempt")
+@RequestMapping("/employee")
 public class AttemptController {
 
 	@Autowired
@@ -23,9 +23,9 @@ public class AttemptController {
 	@Value("${induction.course.maxAttempt}")
 	private Integer maxAttempt;
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/reset")
-	public void resetAttempt(@RequestParam long employeeId) {
-		attemptService.deleteByEmployeeId(employeeId);
+	@RequestMapping(method = RequestMethod.GET, value = "/attempt/clear")
+	public void clearAttempts() {
+		attemptService.deleteAttempts();
 	}
 
 }

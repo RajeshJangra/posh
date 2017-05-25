@@ -46,6 +46,27 @@ CREATE TABLE `attempt` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `attempt_archive`
+--
+DROP TABLE IF EXISTS `attempt_archive`;
+/* table which is a backup of table "attempt" for an employee */;
+CREATE TABLE `attempt_archive` (
+  `archive_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `attempt_id` bigint(20) NOT NULL,
+  `FINISH_TIME` datetime DEFAULT NULL,
+  `MAX_SCORE` int(3) DEFAULT NULL,
+  `RESULT` varchar(20) DEFAULT NULL,
+  `SCORE` int(3) DEFAULT NULL,
+  `SCORE_PERCENT` double DEFAULT NULL,
+  `START_TIME` datetime NOT NULL,
+  `COURSE_ID` bigint(20) NOT NULL,
+  `EMPLOYEE_ID` bigint(20) NOT NULL,
+  `POLICY_AGREED` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`archive_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
 -- Table structure for table `choice`
 --
 
