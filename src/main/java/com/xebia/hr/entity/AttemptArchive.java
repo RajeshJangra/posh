@@ -1,21 +1,16 @@
 package com.xebia.hr.entity;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  * Created by jasleen on 12/05/17.
  */
-@Entity @IdClass(AttemptArchiveId.class)
+@Entity
+@IdClass(AttemptArchiveId.class)
 @Table(name = "ATTEMPT_ARCHIVE")
 public class AttemptArchive extends AbstractPersistable<Long> implements Serializable, Comparable<AttemptArchive> {
 

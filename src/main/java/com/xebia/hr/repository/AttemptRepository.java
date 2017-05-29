@@ -21,6 +21,4 @@ public interface AttemptRepository extends JpaRepository<Attempt, Long> {
 
     //@Query(value = "SELECT count(*) from attempt GROUP BY EMPLOYEE_ID HAVING count(*) >= 3 AND EMPLOYEE_ID = :employeeId", nativeQuery = true)
     public List<Attempt> findByEmployeeIdAndResult(long employeeId, String result);
-
-    public List<Attempt> findByEmployeeId(Long employeeId);
 }

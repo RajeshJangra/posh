@@ -123,4 +123,6 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
 	public int compareTo(Attempt o) {
 		return this.startTime.compareTo(o.startTime);
 	}
+
+
 }
