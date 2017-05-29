@@ -54,4 +54,9 @@ public class EmployeeService {
     public void save(List<Employee> employees) {
     	employeeRepository.save(employees);
 	}
+    
+    public long findAutoGenEmpId(String empId){
+    	Employee employee = employeeRepository.findByEmpId(empId);
+    	return employee.getId();
+    }
 }

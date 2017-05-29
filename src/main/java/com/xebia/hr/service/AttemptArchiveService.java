@@ -1,21 +1,30 @@
 package com.xebia.hr.service;
 
-import com.xebia.hr.entity.Attempt;
-import com.xebia.hr.entity.AttemptArchive;
-import com.xebia.hr.repository.AttemptArchiveRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.xebia.hr.entity.Attempt;
+import com.xebia.hr.repository.AttemptArchiveRepository;
+import com.xebia.hr.repository.AttemptRepository;
 
 @Service
 public class AttemptArchiveService {
 
-    @Autowired
-    private AttemptArchiveRepository attemptArchiveRepository;
-
-    public AttemptArchive createAttemptBackup(Attempt attempt) {
-        return attemptArchiveRepository.save(new AttemptArchive(attempt));
-    }
-
-
-
+	@Autowired
+	private AttemptRepository attemptRepository;
+	
+	@Autowired
+	private AttemptArchiveRepository attemptArchiveRepository;
+	
+	public List<Attempt> createAttemptBackup(Long autoGenEmpId){
+		List<Attempt> attempts = attemptRepository.findByEmployeeId(autoGenEmpId);
+		for(Attempt attempt:attempts){
+	    	if(attempt.getResult() != "FAILED"){
+	    		attemptArchiveRepository.save(attempt);
+	    }
+		}
+		return attempts;
+	}
 }

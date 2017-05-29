@@ -14,10 +14,6 @@ import java.sql.Timestamp;
 @Table(name = "ATTEMPT")
 public class Attempt extends AbstractPersistable<Long> implements Serializable, Comparable<Attempt> {
 
-    @Id
-    @Column(columnDefinition = "BigInteger(20)", name = "ID")
-    private Long id;
-
     @Column(columnDefinition = "Integer(3)", name = "SCORE")
     private int score;
 
@@ -50,14 +46,6 @@ public class Attempt extends AbstractPersistable<Long> implements Serializable, 
     
     @Column(name = "POLICY_AGREED", columnDefinition="tinyint(1) default 0")
     private boolean policyAgreed;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public int getScore() {
         return score;

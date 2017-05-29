@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-import com.xebia.hr.repository.EmployeeRepository;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,6 @@ public class AttemptService {
     
     @Autowired
     private EmployeeService employeeService;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
     
     public Attempt findOne(long id) throws Exception{
     	Attempt attempt = attemptRepository.findOne(id);
@@ -75,16 +73,16 @@ public class AttemptService {
     	return attemptRepository.findByCourse(course);
     }
 
-    public int countAttempts(Long employeeId) {
-        return attemptRepository.countDistinctAttemptsByEmployeeId(employeeId);
+    public int countAttempts(Long autoGenEmpId) {
+        return attemptRepository.countDistinctAttemptsByEmployeeId(autoGenEmpId);
     }
-
-    public void deleteAttempts() {
-        List<Attempt> attempts = attemptRepository.findAll();
+    
+    @Transactional
+    public void deleteAttempts(List<Attempt> attempts,Long autoGenEmpId) {
         for (Attempt attempt : attempts) {
-            int totalAttempts = countAttempts(attempt.getId());
-            if ((totalAttempts == 3) && (attempt.getResult() != "PASSED")) {
-                attemptRepository.delete(attempt.getId());
+                int totalAttempts = countAttempts(autoGenEmpId);
+            if ((totalAttempts == 3) && (attempt.getResult().equalsIgnoreCase("FAILED"))) {
+                attemptRepository.delete(autoGenEmpId);
             }
         }
     }

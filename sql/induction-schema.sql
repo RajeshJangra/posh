@@ -51,7 +51,7 @@ CREATE TABLE `attempt` (
 DROP TABLE IF EXISTS `attempt_archive`;
 /* table which is a backup of table "attempt" for an employee */;
 CREATE TABLE `attempt_archive` (
-  `archive_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `attempt_id` bigint(20) NOT NULL,
   `FINISH_TIME` datetime DEFAULT NULL,
   `MAX_SCORE` int(3) DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `attempt_archive` (
   `COURSE_ID` bigint(20) NOT NULL,
   `EMPLOYEE_ID` bigint(20) NOT NULL,
   `POLICY_AGREED` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`archive_id`)
+  PRIMARY KEY (`id`,`attempt_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -1,25 +1,30 @@
 package com.xebia.hr.entity;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  * Created by jasleen on 12/05/17.
  */
-@Entity
+@Entity @IdClass(AttemptArchiveId.class)
 @Table(name = "ATTEMPT_ARCHIVE")
 public class AttemptArchive extends AbstractPersistable<Long> implements Serializable, Comparable<AttemptArchive> {
 
     @Id
+    @GeneratedValue
     @Column(columnDefinition = "BigInteger(20)", name = "ARCHIVE_ID")
-    private Long archiveId;
+    private Long id;
 
+    @Id
     @Column(columnDefinition = "BigInteger(20)", name = "ATTEMPT_ID")
     private Long attemptId;
 
@@ -45,11 +50,11 @@ public class AttemptArchive extends AbstractPersistable<Long> implements Seriali
     private boolean policyAgreed;
 
     public Long getArchiveId() {
-        return archiveId;
+        return id;
     }
 
     public void setArchiveId(Long archiveId) {
-        this.archiveId = archiveId;
+        this.id = archiveId;
     }
 
     public long getAttemptId() {

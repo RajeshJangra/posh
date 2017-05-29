@@ -1,5 +1,7 @@
 package com.xebia.hr.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Employee;
 import com.xebia.hr.exceptions.NotFoundException;
+import com.xebia.hr.service.AttemptArchiveService;
+import com.xebia.hr.service.AttemptService;
 import com.xebia.hr.service.CourseService;
 import com.xebia.hr.service.EmployeeService;
 import com.xebia.hr.task.EmployeeDataFeeder;
@@ -31,6 +36,12 @@ public class EmployeeController {
     
     @Autowired
     private CourseService courseService;
+    
+	@Autowired(required=false)
+	private AttemptService attemptService;
+	
+	@Autowired(required=false)
+	private AttemptArchiveService attemptArchiveService;
     
     @Autowired
     private EmployeeDataFeeder employeeDataFeeder;
@@ -85,4 +96,20 @@ public class EmployeeController {
 			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
     }
+    
+	@RequestMapping(value = "{empId}/attempts", method = RequestMethod.DELETE)
+	@PreAuthorize(value="hasRole('admin')")
+	public ResponseEntity<?> clearAttempts(@PathVariable String empId) throws NotFoundException {
+		log.info("Calling clearAttempts: employeeId: " + empId);
+		try {
+			Employee employee = employeeService.findByEmpId(empId);
+			long autoGenEmpId = employee.getId();
+			List<Attempt> attempts = attemptArchiveService.createAttemptBackup(autoGenEmpId);
+			attemptService.deleteAttempts(attempts,autoGenEmpId);
+			return ResponseEntity.ok("Success");
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
+
 }
