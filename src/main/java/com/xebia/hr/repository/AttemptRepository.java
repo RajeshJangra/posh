@@ -1,15 +1,12 @@
 package com.xebia.hr.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.xebia.hr.entity.Attempt;
 import com.xebia.hr.entity.Course;
 import com.xebia.hr.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author gauravagrawal
@@ -18,12 +15,12 @@ import com.xebia.hr.entity.Employee;
 @Repository
 public interface AttemptRepository extends JpaRepository<Attempt, Long> {
 
-	public List<Attempt> findByCourseAndEmployee(Course course, Employee employee);
-	
-	public List<Attempt> findByCourse(Course course);
+    public List<Attempt> findByCourseAndEmployee(Course course, Employee employee);
 
-    @Query(value = "SELECT count(*) from attempt GROUP BY EMPLOYEE_ID HAVING count(*) >= 3 AND EMPLOYEE_ID = :employeeId", nativeQuery = true)
-    public int countDistinctAttemptsByEmployeeId(@Param("employeeId") Long employeeId);
+    public List<Attempt> findByCourse(Course course);
 
-	public List<Attempt> findByEmployeeId(Long employeeId);
+    //@Query(value = "SELECT count(*) from attempt GROUP BY EMPLOYEE_ID HAVING count(*) >= 3 AND EMPLOYEE_ID = :employeeId", nativeQuery = true)
+    public List<Attempt> findByEmployeeIdAndResult(long employeeId, String result);
+
+    public List<Attempt> findByEmployeeId(Long employeeId);
 }
